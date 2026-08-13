@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Event Map Viewer</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
+<style>
+  body { margin: 0; }
+  #viewer { width: 100vw; height: 100vh; }
+</style>
+</head>
+<body>
+<div id="viewer"></div>
+
+<script>
+  OpenSeadragon({
+    id: "viewer",
+    prefixUrl: "openseadragon-images/",
+    tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi"
+  });
+</script>
+</body>
+</html>
