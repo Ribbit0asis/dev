@@ -67,29 +67,31 @@
   });
 
   viewer.addHandler("canvas-click", function(event) {
-    // ① 画面上のクリック位置（pixel）
+    // ① 画面上のクリック位置（ブラウザ px）
     const webPoint = event.position;
 
     // ② viewport 座標に変換
     const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
 
-    // ③ 画像座標（px）に変換
-    const imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
+    // ③ 現在のズーム倍率を取得
+    const zoom = viewer.viewport.getZoom(true); // true = current zoom
 
-    const x_px = Math.round(imagePoint.x);
-    const y_px = Math.round(imagePoint.y);
-
-    console.log("クリック位置(px):", x_px, y_px);
-
-    // ④ 仮 overlay のサイズ（調整用）
-    const tempW = 100;  // 仮の幅(px)
-    const tempH = 100;  // 仮の高さ(px)
-
-    // ⑤ px → 割合に変換
+    // ④ 元画像のサイズ（px）
     const img = viewer.world.getItemAt(0);
     const imageWidth = img.getContentSize().x;
     const imageHeight = img.getContentSize().y;
 
+    // ⑤ viewport 座標 → 元画像 px に変換（ズレない方法）
+    const x_px = Math.round(viewportPoint.x * imageWidth * zoom);
+    const y_px = Math.round(viewportPoint.y * imageHeight * zoom);
+
+    console.log("クリック位置(px):", x_px, y_px);
+
+    // ⑥ 仮 overlay のサイズ
+    const tempW = 100;
+    const tempH = 100;
+
+    // ⑦ px → 割合に変換
     const rect = new OpenSeadragon.Rect(
       x_px / imageWidth,
       y_px / imageHeight,
@@ -97,13 +99,12 @@
       tempH / imageHeight
     );
 
-    // ⑥ 仮 overlay を作成
+    // ⑧ 仮 overlay を作成
     const tempDiv = document.createElement("div");
     tempDiv.className = "booth-overlay";
-    tempDiv.style.backgroundColor = "rgba(0, 150, 255, 0.3)"; // 青系で仮表示
+    tempDiv.style.backgroundColor = "rgba(0, 150, 255, 0.3)";
     tempDiv.style.border = "2px solid rgba(0, 150, 255, 0.8)";
 
-    // ⑦ overlay を追加
     viewer.addOverlay({
       element: tempDiv,
       location: rect
