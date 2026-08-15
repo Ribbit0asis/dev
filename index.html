@@ -44,13 +44,25 @@
   fetch("https://ribbit0asis.github.io/test/json/booths.json")
     .then(r => r.json())
     .then(booths => {
+      
     viewer.addHandler("open", () => {
+
+      const img = viewer.world.getItemAt(0);
+      const imageWidth = img.getContentSize().x;
+      const imageHeight = img.getContentSize().y;
+
       for (const booth of booths) {
+
+        const rect = new OpenSeadragon.Rect(
+          booth.x_px / imageWidth,
+          booth.y_px / imageHeight,
+          booth.w_px / imageWidth,
+          booth.h_px / imageHeight
+        );
+
         viewer.addOverlay({
           element: createOverlayButton(booth.id),
-          location: new OpenSeadragon.Rect(
-            booth.x, booth.y, booth.w, booth.h
-          )
+          location: rect
         });
       }
     });
