@@ -77,7 +77,8 @@
     const imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
 
     const x_px = Math.round(imagePoint.x);
-    const y_px = Math.round(imagePoint.y);
+    const y_px_raw = Math.round(imagePoint.y);
+    const y_px = imageHeight - y_px_raw;
 
     console.log("クリック位置(px):", x_px, y_px);
 
