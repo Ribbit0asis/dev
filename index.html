@@ -6,18 +6,70 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
 <style>
   body { margin: 0; }
-  #viewer { width: 100vw; height: 100vh; }
+  #openseadragon { width: 100vw; height: 100vh; }
 </style>
 </head>
 <body>
 <div id="viewer"></div>
 
 <script>
-  OpenSeadragon({
-    id: "viewer",
+  const viewer = OpenSeadragon({
+    id: "openseadragon",
     prefixUrl: "https://ribbit0asis.github.io/test/images/",
     tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi"
   });
+
+  function sendBoothMessage(boothId) {
+      window.parent.postMessage(
+          { boothId: boothId },
+          "*"
+      );
+  };
+
+  function createOverlayButton(boothId) {
+      const div = document.createElement("div");
+      div.className = "booth-overlay";
+      div.dataset.boothId = boothId;
+
+      div.onclick = () => sendBoothMessage(boothId);
+
+      return div;
+  };
+
+  const booths = [
+    { id: "01-S01", x: 0.10, y: 0.20, w: 0.05, h: 0.08 },
+    { id: "08-N6", x: 0.20, y: 0.20, w: 0.05, h: 0.08 },
+    { id: "01-N1", x: 0.30, y: 0.20, w: 0.05, h: 0.08 }
+  ];
+
+  viewer.addOverlay({
+    element: createOverlayButton("A-12"),
+    location: new OpenSeadragon.Rect(0.1, 0.2, 0.05, 0.08)
+  });
+
+  viewer.addHandler("open", () => {
+
+    for (const booth of booths) {
+
+        // クリック領域（div）を作る
+        const div = createOverlayButton(booth.id);
+
+        // Rect（位置とサイズ）を作る
+        const rect = new OpenSeadragon.Rect(
+            booth.x,
+            booth.y,
+            booth.w,
+            booth.h
+        );
+
+        // overlay を配置する
+        viewer.addOverlay({
+            element: div,
+            location: rect
+        });
+    }
+  });
+
 </script>
 </body>
 </html>
