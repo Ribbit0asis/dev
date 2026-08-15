@@ -21,7 +21,7 @@
   const viewer = OpenSeadragon({
     id: "viewer",
     prefixUrl: "https://ribbit0asis.github.io/test/images/",
-    tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi"
+    tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi?v=" + Date.now()
   });
 
   function sendBoothMessage(boothId) {
@@ -41,16 +41,18 @@
       return div;
   };
 
-  fetch("https://ribbit0asis.github.io/test/json/booths.json")
+  fetch("https://ribbit0asis.github.io/test/json/booths.json?v=" + Date.now())
     .then(r => r.json())
     .then(booths => {
-    viewer.addHandler("open", () => {
+    viewer.addHandler("tile-loaded", () => {
+      if (window._overlayInitialized) return;
+      window._overlayInitialized = true;
+
       const img = viewer.world.getItemAt(0);
       const imageWidth = img.getContentSize().x;
       const imageHeight = img.getContentSize().y;
 
       for (const booth of booths) {
-
         const rect = new OpenSeadragon.Rect(
           booth.x / imageWidth,
           booth.y / imageHeight,
@@ -66,95 +68,50 @@
     });
   });
 
-viewer.addHandler("canvas-click", function(event) {
+  viewer.addHandler("canvas-click", function(event) {
+    // ① 画面上のクリック位置（ブラウザ px）
+    const webPoint = event.position;
 
-  const webPoint = event.position;
-  const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
+    // ② viewport 座標に変換
+    const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
 
-  const zoom = viewer.viewport.getZoom(true);
+    // ③ 現在のズーム倍率を取得
+    const zoom = viewer.viewport.getZoom(true); // true = current zoom
 
-  const img = viewer.world.getItemAt(0);
-  const imageWidth = img.getContentSize().x;
-  const imageHeight = img.getContentSize().y;
+    // ④ 元画像のサイズ（px）
+    const img = viewer.world.getItemAt(0);
+    const imageWidth = img.getContentSize().x;
+    const imageHeight = img.getContentSize().y;
 
-  // 元画像の px（ズレない計算）
-  let x_px = Math.round(viewportPoint.x * imageWidth * zoom);
-  let y_px = Math.round(viewportPoint.y * imageHeight * zoom);
+    // ⑤ viewport 座標 → 元画像 px に変換（ズレない方法）
+    const x_px = Math.round(viewportPoint.x * imageWidth * zoom);
+    const y_px = Math.round(viewportPoint.y * imageHeight * zoom);
 
-  const tempW = 100;
-  const tempH = 100;
+    console.log("クリック位置(px):", x_px, y_px);
 
-  // 初期位置の Rect
-  let rect = new OpenSeadragon.Rect(
-    x_px / imageWidth,
-    y_px / imageHeight,
-    tempW / imageWidth,
-    tempH / imageHeight
-  );
+    // ⑥ 仮 overlay のサイズ
+    const tempW = 100;
+    const tempH = 100;
 
-  // overlay 要素
-  const tempDiv = document.createElement("div");
-  tempDiv.className = "booth-overlay";
-  tempDiv.style.backgroundColor = "rgba(0, 150, 255, 0.3)";
-  tempDiv.style.border = "2px solid rgba(0, 150, 255, 0.8)";
-  tempDiv.style.position = "absolute"; // 重要：ドラッグ可能にする
-
-  viewer.addOverlay({
-    element: tempDiv,
-    location: rect
-  });
-
-  // -----------------------------
-  // ★ ドラッグ処理を追加
-  // -----------------------------
-  let isDragging = false;
-  let startX = 0;
-  let startY = 0;
-
-  tempDiv.addEventListener("mousedown", function(e) {
-    isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
-    e.preventDefault();
-  });
-
-  document.addEventListener("mousemove", function(e) {
-    if (!isDragging) return;
-
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-
-    startX = e.clientX;
-    startY = e.clientY;
-
-    // dx, dy は画面上の px → viewport → image(px) に変換
-    const viewportDelta = viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(dx, dy));
-    const imageDelta = viewer.viewport.viewportToImageCoordinates(viewportDelta);
-
-    // 元画像の px を更新
-    x_px += imageDelta.x * zoom;
-    y_px += imageDelta.y * zoom;
-
-    // Rect を更新
-    rect = new OpenSeadragon.Rect(
+    // ⑦ px → 割合に変換
+    const rect = new OpenSeadragon.Rect(
       x_px / imageWidth,
       y_px / imageHeight,
       tempW / imageWidth,
       tempH / imageHeight
     );
 
-    viewer.updateOverlay(tempDiv, rect);
+    // ⑧ 仮 overlay を作成
+    const tempDiv = document.createElement("div");
+    tempDiv.className = "booth-overlay";
+    tempDiv.style.backgroundColor = "rgba(0, 150, 255, 0.3)";
+    tempDiv.style.border = "2px solid rgba(0, 150, 255, 0.8)";
+
+    viewer.addOverlay({
+      element: tempDiv,
+      location: rect
+    });
   });
-
-  document.addEventListener("mouseup", function() {
-    if (!isDragging) return;
-    isDragging = false;
-
-    console.log("ドラッグ後の位置(px):", Math.round(x_px), Math.round(y_px));
-  });
-
-});
-
 
 </script>
 </body>
