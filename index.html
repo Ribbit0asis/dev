@@ -41,38 +41,19 @@
       return div;
   };
 
-  const booths = [
-    { id: "01-S01", x: 0.10, y: 0.20, w: 0.05, h: 0.08 },
-    { id: "08-N6", x: 0.20, y: 0.20, w: 0.05, h: 0.08 },
-    { id: "01-N1", x: 0.30, y: 0.20, w: 0.05, h: 0.08 }
-  ];
-
-  viewer.addOverlay({
-    element: createOverlayButton("A-12"),
-    location: new OpenSeadragon.Rect(0.1, 0.2, 0.05, 0.08)
-  });
-
-  viewer.addHandler("open", () => {
-
-    for (const booth of booths) {
-
-        // クリック領域（div）を作る
-        const div = createOverlayButton(booth.id);
-
-        // Rect（位置とサイズ）を作る
-        const rect = new OpenSeadragon.Rect(
-            booth.x,
-            booth.y,
-            booth.w,
-            booth.h
-        );
-
-        // overlay を配置する
+  fetch("https://sota.github.io/test/json/booths.json")
+    .then(r => r.json())
+    .then(booths => {
+    viewer.addHandler("open", () => {
+      for (const booth of booths) {
         viewer.addOverlay({
-            element: div,
-            location: rect
+          element: createOverlayButton(booth.id),
+          location: new OpenSeadragon.Rect(
+            booth.x, booth.y, booth.w, booth.h
+          )
         });
-    }
+      }
+    });
   });
 
 </script>
