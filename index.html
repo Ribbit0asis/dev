@@ -28,6 +28,7 @@
     background-color: rgba(255, 0, 0, 0.3); /* 赤・30%透明 */
     border: 1px solid rgba(255, 0, 0, 0.6); /* 見やすい枠線 */
     cursor: pointer;
+    pointer-events: auto;
   }
 </style>
 </head>
@@ -43,7 +44,13 @@
   const viewer = OpenSeadragon({
     id: "viewer",
     prefixUrl: "https://ribbit0asis.github.io/test/images/",
-    tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi?v=" + Date.now()
+    tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi?v=" + Date.now(),
+    gestureSettingsMouse: {
+      clickToZoom: false,
+      dblClickToZoom: true,
+      dragToPan: true,
+      scrollToZoom: true
+    }
   });
 
   function sendBoothMessage(boothId) {
@@ -58,13 +65,10 @@
       div.className = "booth-overlay";
       div.dataset.boothId = boothId;
 
-      div.onclick = () => {
-          // JSON から該当ブースを検索
+      div.addEventListener("pointerdown", () => {
           const booth = window._booths.find(b => b.id === boothId);
-
-          // 右側 UI に詳細表示
           if (booth) showBoothDetail(booth);
-      };
+      });
       return div;
   };
 
