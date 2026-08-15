@@ -6,7 +6,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
 <style>
   body { margin: 0; }
-  #openseadragon { width: 100vw; height: 100vh; }
+  #viewer { width: 100vw; height: 100vh; }
   .booth-overlay {
     background-color: rgba(255, 0, 0, 0.3); /* 赤・30%透明 */
     border: 1px solid rgba(255, 0, 0, 0.6); /* 見やすい枠線 */
@@ -19,7 +19,7 @@
 
 <script>
   const viewer = OpenSeadragon({
-    id: "openseadragon",
+    id: "viewer",
     prefixUrl: "https://ribbit0asis.github.io/test/images/",
     tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi"
   });
