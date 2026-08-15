@@ -5,8 +5,25 @@
 <title>Event Map Viewer</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
 <style>
-  body { margin: 0; }
-  #viewer { width: 100vw; height: 100vh; }
+  body { margin: 0; display: flex; height: 100vh; }
+  #viewer { flex: 2; }
+  #sidebar {
+    flex: 1;
+    overflow-y: auto;
+    border-left: 1px solid #ccc;
+    padding: 10px;
+    background: #fafafa;
+  }
+  .booth-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    cursor: pointer;
+  }
+  .booth-item:hover {
+    background: #eef;
+  }
   .booth-overlay {
     background-color: rgba(255, 0, 0, 0.3); /* 赤・30%透明 */
     border: 1px solid rgba(255, 0, 0, 0.6); /* 見やすい枠線 */
@@ -16,6 +33,11 @@
 </head>
 <body>
 <div id="viewer"></div>
+<div id="sidebar">
+  <h2>Booth List</h2>
+  <div id="booth-list"></div>
+  <div id="booth-detail"></div>
+</div>
 
 <script>
   const viewer = OpenSeadragon({
@@ -41,31 +63,63 @@
       return div;
   };
 
+  function renderBoothList(booths) {
+    const list = document.getElementById("booth-list");
+    list.innerHTML = "";
+
+    for (const booth of booths) {
+      const item = document.createElement("div");
+      item.className = "booth-item";
+
+      item.innerHTML = `
+        <strong>${booth.id}</strong><br>
+        ${booth.name}<br>
+        <small>${booth.desc || ""}</small>
+      `;
+
+      item.onclick = () => showBoothDetail(booth);
+
+      list.appendChild(item);
+    }
+  }
+
+  function showBoothDetail(booth) {
+    const detail = document.getElementById("booth-detail");
+
+    detail.innerHTML = `
+      <h3>${booth.name}</h3>
+      <p>${booth.desc || ""}</p>
+      ${booth.url ? `<a href="${booth.url}" target="_blank">公式サイト</a>` : ""}
+    `;
+  }
+
   fetch("https://ribbit0asis.github.io/test/json/booths.json?v=" + Date.now())
     .then(r => r.json())
     .then(booths => {
-    viewer.addHandler("tile-loaded", () => {
-      if (window._overlayInitialized) return;
-      window._overlayInitialized = true;
+      window._booths = booths;  // OpenSeadragon連動用
+      renderBoothList(booths);  // ★右側 UI を描画
+      viewer.addHandler("tile-loaded", () => {
+        if (window._overlayInitialized) return;
+        window._overlayInitialized = true;
 
-      const img = viewer.world.getItemAt(0);
-      const imageWidth = img.getContentSize().x;
-      const imageHeight = img.getContentSize().y;
+        const img = viewer.world.getItemAt(0);
+        const imageWidth = img.getContentSize().x;
+        const imageHeight = img.getContentSize().y;
 
-      for (const booth of booths) {
-        const rect = new OpenSeadragon.Rect(
-          booth.x / imageWidth,
-          booth.y / imageHeight,
-          booth.w / imageWidth,
-          booth.h / imageHeight
-        );
+        for (const booth of booths) {
+          const rect = new OpenSeadragon.Rect(
+            booth.x / imageWidth,
+            booth.y / imageHeight,
+            booth.w / imageWidth,
+            booth.h / imageHeight
+          );
 
-        viewer.addOverlay({
-          element: createOverlayButton(booth.id),
-          location: rect
-        });
-      }
-    });
+          viewer.addOverlay({
+            element: createOverlayButton(booth.id),
+            location: rect
+          });
+        }
+      });
   });
 
   viewer.addHandler("canvas-click", function(event) {
