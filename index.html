@@ -66,49 +66,95 @@
     });
   });
 
-  viewer.addHandler("canvas-click", function(event) {
-    // ① 画面上のクリック位置（pixel）
-    const webPoint = event.position;
+viewer.addHandler("canvas-click", function(event) {
 
-    // ② viewport 座標に変換
-    const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
+  const webPoint = event.position;
+  const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
 
-    // ③ 画像座標（px）に変換
-    const imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
+  const zoom = viewer.viewport.getZoom(true);
 
-    const x_px = Math.round(imagePoint.x);
-    const y_px = Math.round(imagePoint.y);
+  const img = viewer.world.getItemAt(0);
+  const imageWidth = img.getContentSize().x;
+  const imageHeight = img.getContentSize().y;
 
-    console.log("クリック位置(px):", x_px, y_px);
+  // 元画像の px（ズレない計算）
+  let x_px = Math.round(viewportPoint.x * imageWidth * zoom);
+  let y_px = Math.round(viewportPoint.y * imageHeight * zoom);
 
-    // ④ 仮 overlay のサイズ（調整用）
-    const tempW = 100;  // 仮の幅(px)
-    const tempH = 100;  // 仮の高さ(px)
+  const tempW = 100;
+  const tempH = 100;
 
-    // ⑤ px → 割合に変換
-    const img = viewer.world.getItemAt(0);
-    const imageWidth = img.getContentSize().x;
-    const imageHeight = img.getContentSize().y;
+  // 初期位置の Rect
+  let rect = new OpenSeadragon.Rect(
+    x_px / imageWidth,
+    y_px / imageHeight,
+    tempW / imageWidth,
+    tempH / imageHeight
+  );
 
-    const rect = new OpenSeadragon.Rect(
+  // overlay 要素
+  const tempDiv = document.createElement("div");
+  tempDiv.className = "booth-overlay";
+  tempDiv.style.backgroundColor = "rgba(0, 150, 255, 0.3)";
+  tempDiv.style.border = "2px solid rgba(0, 150, 255, 0.8)";
+  tempDiv.style.position = "absolute"; // 重要：ドラッグ可能にする
+
+  viewer.addOverlay({
+    element: tempDiv,
+    location: rect
+  });
+
+  // -----------------------------
+  // ★ ドラッグ処理を追加
+  // -----------------------------
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+
+  tempDiv.addEventListener("mousedown", function(e) {
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    e.preventDefault();
+  });
+
+  document.addEventListener("mousemove", function(e) {
+    if (!isDragging) return;
+
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+
+    startX = e.clientX;
+    startY = e.clientY;
+
+    // dx, dy は画面上の px → viewport → image(px) に変換
+    const viewportDelta = viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(dx, dy));
+    const imageDelta = viewer.viewport.viewportToImageCoordinates(viewportDelta);
+
+    // 元画像の px を更新
+    x_px += imageDelta.x * zoom;
+    y_px += imageDelta.y * zoom;
+
+    // Rect を更新
+    rect = new OpenSeadragon.Rect(
       x_px / imageWidth,
       y_px / imageHeight,
       tempW / imageWidth,
       tempH / imageHeight
     );
 
-    // ⑥ 仮 overlay を作成
-    const tempDiv = document.createElement("div");
-    tempDiv.className = "booth-overlay";
-    tempDiv.style.backgroundColor = "rgba(0, 150, 255, 0.3)"; // 青系で仮表示
-    tempDiv.style.border = "2px solid rgba(0, 150, 255, 0.8)";
-
-    // ⑦ overlay を追加
-    viewer.addOverlay({
-      element: tempDiv,
-      location: rect
-    });
+    viewer.updateOverlay(tempDiv, rect);
   });
+
+  document.addEventListener("mouseup", function() {
+    if (!isDragging) return;
+    isDragging = false;
+
+    console.log("ドラッグ後の位置(px):", Math.round(x_px), Math.round(y_px));
+  });
+
+});
+
 
 </script>
 </body>
