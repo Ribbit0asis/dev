@@ -440,6 +440,7 @@
   document.getElementById("tab-search").addEventListener("click", () => setActiveTab("search"));
   document.getElementById("search-input").addEventListener("input", (e) => {
       searchQuery = e.target.value;
+      closeBoothDetail();
       renderBoothList();
   });
 
