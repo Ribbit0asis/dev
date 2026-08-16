@@ -53,12 +53,24 @@
     }
   });
 
-  function sendBoothMessage(boothId) {
-      window.parent.postMessage(
-          { boothId: boothId },
-          "*"
-      );
-  };
+  function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, ch => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+      }[ch]));
+  }
+
+  function isSafeUrl(url) {
+      try {
+          const u = new URL(url, window.location.href);
+          return u.protocol === "http:" || u.protocol === "https:";
+      } catch {
+          return false;
+      }
+  }
 
   function createOverlayButton(boothId) {
       const div = document.createElement("div");
@@ -81,9 +93,9 @@
       item.className = "booth-item";
 
       item.innerHTML = `
-        <strong>${booth.id}</strong><br>
-        ${booth.name}<br>
-        <small>${booth.desc || ""}</small>
+        <strong>${escapeHtml(booth.id)}</strong><br>
+        ${escapeHtml(booth.name)}<br>
+        <small>${escapeHtml(booth.desc || "")}</small>
       `;
 
       item.onclick = () => showBoothDetail(booth);
@@ -96,9 +108,9 @@
     const detail = document.getElementById("booth-detail");
 
     detail.innerHTML = `
-      <h3>${booth.name}</h3>
-      <p>${booth.desc || ""}</p>
-      ${booth.url ? `<a href="${booth.url}" target="_blank">公式サイト</a>` : ""}
+      <h3>${escapeHtml(booth.name)}</h3>
+      <p>${escapeHtml(booth.desc || "")}</p>
+      ${booth.url && isSafeUrl(booth.url) ? `<a href="${escapeHtml(booth.url)}" target="_blank" rel="noopener noreferrer">公式サイト</a>` : ""}
     `;
   }
 
@@ -134,14 +146,10 @@
   viewer.addHandler("canvas-click", function(event) {
     const webPoint = event.position;
     const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
-    const zoom = viewer.viewport.getZoom(true); // true = current zoom
+    const imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
 
-    const img = viewer.world.getItemAt(0);
-    const imageWidth = img.getContentSize().x;
-    const imageHeight = img.getContentSize().y;
-
-    const x_px = Math.round(viewportPoint.x * imageWidth * zoom);
-    const y_px = Math.round(viewportPoint.y * imageHeight * zoom);
+    const x_px = Math.round(imagePoint.x);
+    const y_px = Math.round(imagePoint.y);
 
     console.log("クリック位置(px):", x_px, y_px);
 
