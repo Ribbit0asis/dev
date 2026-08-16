@@ -258,6 +258,7 @@
 <div id="viewer"></div>
 <div id="sidebar">
   <div class="tabs" role="tablist">
+    <button type="button" class="tab-button tab-button--active">ブース検索</button>
     <button type="button" class="tab-button tab-button--active" id="tab-all" role="tab" aria-selected="true" aria-controls="booth-list">ブース一覧</button>
     <button type="button" class="tab-button" id="tab-checked" role="tab" aria-selected="false" aria-controls="booth-list">チェック済み</button>
   </div>
@@ -562,7 +563,7 @@
       <div class="detail-links">${officialLinks}</div>
       ${performerLinks ? `
         <div class="detail-performers">
-          <h4>出演者X</h4>
+          <h4>出演者（Xアカウント）</h4>
           <ul>${performerLinks}</ul>
         </div>
       ` : ""}
