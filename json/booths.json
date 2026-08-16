@@ -11,17 +11,30 @@
                              },
                              {
                                  "name":  "aaa",
-                                 "url":  ""
+                                 "url":  "none"
                              },
                              {
                                  "name":  "ccc",
                                  "url":  "https://x.com/va_shop_info"
                              }
                          ],
-        "x":  1238,
-        "y":  305,
+        "x":  1235,
+        "y":  671,
         "w":  320,
-        "h":  105
+        "h":  370
+    },
+    {
+        "id":  "01-N02",
+        "name":  "バンダイナムコエンターテインメント",
+        "urlSns":  "https://x.com/bandainamco_cs",
+        "urlPage":  "https://tgs2026.bn-ent.net/jp/",
+        "performerSns":  [
+
+                         ],
+        "x":  2092,
+        "y":  1081,
+        "w":  284,
+        "h":  244
     },
     {
         "id":  "03-C03",
@@ -47,9 +60,9 @@
                                  "url":  "https://x.com/va_shop_info"
                              }
                          ],
-        "x":  1660,
-        "y":  305,
-        "w":  1090,
-        "h":  105
+        "x":  1664,
+        "y":  671,
+        "w":  1093,
+        "h":  370
     }
 ]
