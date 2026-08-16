@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Event Map Viewer</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
 <style>
@@ -15,20 +16,57 @@
     background: #fafafa;
   }
   .booth-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
     padding: 10px;
     margin-bottom: 10px;
     background: white;
     border: 1px solid #ddd;
+  }
+  .booth-item--active {
+    background: #e3ecff;
+    border-color: #7d9cf0;
+  }
+  .booth-check {
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+  .booth-check-label {
+    flex-shrink: 0;
+    font-size: 0.85em;
+    color: #555;
+  }
+  .booth-info {
     cursor: pointer;
   }
-  .booth-item:hover {
-    background: #eef;
+  .booth-info:hover {
+    text-decoration: underline;
+  }
+  .booth-info:focus-visible,
+  .booth-overlay:focus-visible {
+    outline: 3px solid #ff9800;
+    outline-offset: 2px;
   }
   .booth-overlay {
     background-color: rgba(255, 0, 0, 0.3); /* 赤・30%透明 */
     border: 1px solid rgba(255, 0, 0, 0.6); /* 見やすい枠線 */
     cursor: pointer;
     pointer-events: auto;
+  }
+  .booth-overlay--planned {
+    background-color: rgba(0, 110, 255, 0.35);
+    border-color: rgba(0, 110, 255, 0.7);
+  }
+  .booth-overlay--active {
+    outline: 3px solid #ff9800;
+    outline-offset: 1px;
+  }
+
+  @media (max-width: 700px) {
+    body { flex-direction: column; height: auto; min-height: 100vh; }
+    #viewer { flex: none; height: 55vh; }
+    #sidebar { flex: none; border-left: none; border-top: 1px solid #ccc; max-height: 45vh; }
   }
 </style>
 </head>
@@ -43,9 +81,15 @@
 <script>
   // 画像やデータを更新したらここを更新してキャッシュを切り替える（毎回は不要）
   const ASSET_VERSION = "1";
+  const PLANNED_BOOTHS_KEY = "eventMapViewer.plannedBooths";
 
   let allBooths = [];
   let overlayInitialized = false;
+  let activeBoothId = null;
+  let boothRects = {};          // boothId -> OpenSeadragon.Rect（地図連動用）
+  let boothListItems = {};      // boothId -> 一覧のDOM要素
+  let boothOverlayElements = {}; // boothId -> 地図オーバーレイのDOM要素
+  let plannedBoothIds = loadPlannedBooths();
 
   const viewer = OpenSeadragon({
     id: "viewer",
@@ -83,34 +127,139 @@
       }
   }
 
+  function loadPlannedBooths() {
+      try {
+          const raw = localStorage.getItem(PLANNED_BOOTHS_KEY);
+          return new Set(raw ? JSON.parse(raw) : []);
+      } catch {
+          return new Set();
+      }
+  }
+
+  function savePlannedBooths() {
+      try {
+          localStorage.setItem(PLANNED_BOOTHS_KEY, JSON.stringify([...plannedBoothIds]));
+      } catch {
+          // localStorageが使えない環境では保存をあきらめる
+      }
+  }
+
+  function togglePlanned(boothId, isPlanned) {
+      if (isPlanned) {
+          plannedBoothIds.add(boothId);
+      } else {
+          plannedBoothIds.delete(boothId);
+      }
+      savePlannedBooths();
+
+      const overlay = boothOverlayElements[boothId];
+      if (overlay) overlay.classList.toggle("booth-overlay--planned", isPlanned);
+  }
+
+  function setActiveBooth(boothId) {
+      if (activeBoothId != null) {
+          const prevItem = boothListItems[activeBoothId];
+          if (prevItem) prevItem.classList.remove("booth-item--active");
+          const prevOverlay = boothOverlayElements[activeBoothId];
+          if (prevOverlay) prevOverlay.classList.remove("booth-overlay--active");
+      }
+      activeBoothId = boothId;
+      const item = boothListItems[boothId];
+      if (item) item.classList.add("booth-item--active");
+      const overlay = boothOverlayElements[boothId];
+      if (overlay) overlay.classList.add("booth-overlay--active");
+  }
+
+  function focusBoothOnMap(boothId) {
+      const rect = boothRects[boothId];
+      if (!rect) return; // 地図側の初期化が終わっていない場合は何もしない
+
+      const paddingFactor = 6; // ブースの周囲も見えるよう余白を持たせる
+      const w = rect.width * paddingFactor;
+      const h = rect.height * paddingFactor;
+      const padded = new OpenSeadragon.Rect(
+          rect.x - (w - rect.width) / 2,
+          rect.y - (h - rect.height) / 2,
+          w,
+          h
+      );
+      viewer.viewport.fitBounds(padded, false);
+  }
+
+  function selectBoothFromList(booth) {
+      setActiveBooth(booth.id);
+      showBoothDetail(booth);
+      focusBoothOnMap(booth.id);
+  }
+
+  function selectBoothFromOverlay(booth) {
+      setActiveBooth(booth.id);
+      showBoothDetail(booth);
+      const item = boothListItems[booth.id];
+      if (item) item.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
   function createOverlayButton(boothId) {
       const div = document.createElement("div");
       div.className = "booth-overlay";
+      if (plannedBoothIds.has(boothId)) div.classList.add("booth-overlay--planned");
       div.dataset.boothId = boothId;
+      div.tabIndex = 0;
+      div.setAttribute("role", "button");
 
-      div.addEventListener("pointerdown", () => {
-          const booth = allBooths.find(b => b.id === boothId);
-          if (booth) showBoothDetail(booth);
+      const booth = allBooths.find(b => b.id === boothId);
+      div.setAttribute("aria-label", booth ? `${booth.name} を選択` : "ブースを選択");
+
+      const activate = () => {
+          const b = allBooths.find(b => b.id === boothId);
+          if (b) selectBoothFromOverlay(b);
+      };
+      div.addEventListener("pointerdown", activate);
+      div.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              activate();
+          }
       });
+
+      boothOverlayElements[boothId] = div;
       return div;
-  };
+  }
 
   function renderBoothList(booths) {
     const list = document.getElementById("booth-list");
     list.innerHTML = "";
+    boothListItems = {};
 
     for (const booth of booths) {
       const item = document.createElement("div");
       item.className = "booth-item";
 
+      const checkboxId = `plan-check-${booth.id}`;
       item.innerHTML = `
-        <strong>${escapeHtml(booth.id)}</strong><br>
-        ${escapeHtml(booth.name)}<br>
-        <small>${escapeHtml(booth.desc || "")}</small>
+        <input type="checkbox" class="booth-check" id="${checkboxId}" ${plannedBoothIds.has(booth.id) ? "checked" : ""}>
+        <label for="${checkboxId}" class="booth-check-label">行く</label>
+        <div class="booth-info" role="button" tabindex="0" aria-label="${escapeHtml(booth.name)} の詳細を表示">
+          <strong>${escapeHtml(booth.id)}</strong><br>
+          ${escapeHtml(booth.name)}<br>
+          <small>${escapeHtml(booth.desc || "")}</small>
+        </div>
       `;
 
-      item.onclick = () => showBoothDetail(booth);
+      const checkbox = item.querySelector(".booth-check");
+      checkbox.addEventListener("click", (e) => e.stopPropagation());
+      checkbox.addEventListener("change", () => togglePlanned(booth.id, checkbox.checked));
 
+      const info = item.querySelector(".booth-info");
+      info.addEventListener("click", () => selectBoothFromList(booth));
+      info.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          selectBoothFromList(booth);
+        }
+      });
+
+      boothListItems[booth.id] = item;
       list.appendChild(item);
     }
   }
@@ -153,6 +302,7 @@
             booth.w / imageWidth,
             booth.h / imageHeight
           );
+          boothRects[booth.id] = rect;
 
           viewer.addOverlay({
             element: createOverlayButton(booth.id),
