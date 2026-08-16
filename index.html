@@ -41,9 +41,12 @@
 </div>
 
 <script>
+  let allBooths = [];
+  let overlayInitialized = false;
+
   const viewer = OpenSeadragon({
     id: "viewer",
-    prefixUrl: "https://ribbit0asis.github.io/test/images/",
+    prefixUrl: "images/",
     tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi?v=" + Date.now(),
     gestureSettingsMouse: {
       clickToZoom: false,
@@ -78,7 +81,7 @@
       div.dataset.boothId = boothId;
 
       div.addEventListener("pointerdown", () => {
-          const booth = window._booths.find(b => b.id === boothId);
+          const booth = allBooths.find(b => b.id === boothId);
           if (booth) showBoothDetail(booth);
       });
       return div;
@@ -114,14 +117,14 @@
     `;
   }
 
-  fetch("https://ribbit0asis.github.io/test/json/booths.json?v=" + Date.now())
+  fetch("json/booths.json?v=" + Date.now())
     .then(r => r.json())
     .then(booths => {
-      window._booths = booths;  // OpenSeadragon連動用
+      allBooths = booths;  // OpenSeadragon連動用
       renderBoothList(booths);  // ★右側 UI を描画
       viewer.addHandler("tile-loaded", () => {
-        if (window._overlayInitialized) return;
-        window._overlayInitialized = true;
+        if (overlayInitialized) return;
+        overlayInitialized = true;
 
         const img = viewer.world.getItemAt(0);
         const imageWidth = img.getContentSize().x;
