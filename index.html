@@ -17,10 +17,10 @@
   }
   .booth-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 8px 10px;
+    margin-bottom: 6px;
     background: white;
     border: 1px solid #ddd;
   }
@@ -29,19 +29,31 @@
     border-color: #7d9cf0;
   }
   .booth-check {
-    margin-top: 4px;
     flex-shrink: 0;
-  }
-  .booth-check-label {
-    flex-shrink: 0;
-    font-size: 0.85em;
-    color: #555;
   }
   .booth-info {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
     cursor: pointer;
   }
   .booth-info:hover {
     text-decoration: underline;
+  }
+  .booth-id {
+    flex-shrink: 0;
+    font-weight: normal;
+    white-space: nowrap;
+  }
+  .booth-name {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
   }
   .booth-info:focus-visible,
   .booth-overlay:focus-visible {
@@ -246,12 +258,10 @@
 
       const checkboxId = `plan-check-${booth.id}`;
       item.innerHTML = `
-        <input type="checkbox" class="booth-check" id="${checkboxId}" ${plannedBoothIds.has(booth.id) ? "checked" : ""}>
-        <label for="${checkboxId}" class="booth-check-label">行く</label>
+        <input type="checkbox" class="booth-check" id="${checkboxId}" aria-label="${escapeHtml(booth.name)} に行く" ${plannedBoothIds.has(booth.id) ? "checked" : ""}>
         <div class="booth-info" role="button" tabindex="0" aria-label="${escapeHtml(booth.name)} の詳細を表示">
-          <strong>${escapeHtml(booth.id)}</strong><br>
-          ${escapeHtml(booth.name)}<br>
-          <small>${escapeHtml(booth.desc || "")}</small>
+          <span class="booth-id">${escapeHtml(booth.id)}</span>
+          <span class="booth-name">${escapeHtml(booth.name)}</span>
         </div>
       `;
 
