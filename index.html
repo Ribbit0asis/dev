@@ -532,7 +532,7 @@
       } else if (activeTab === "search") {
         empty.textContent = searchQuery.trim()
           ? "該当するブースが見つかりません。"
-          : "ブース番号または名前を入力してください。";
+          : "ブース番号または名前を入力してください。（前方一致）";
       } else {
         empty.textContent = "ブース情報がありません。";
       }
