@@ -267,7 +267,9 @@
   }
 
   function renderDetailLink(url, label) {
-      if (!url || !isSafeUrl(url)) return "";
+      if (!url || !isSafeUrl(url)) {
+          return `<span class="detail-link detail-link--disabled">${escapeHtml(label)}</span>`;
+      }
       return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="detail-link">${escapeHtml(label)}</a>`;
   }
 
@@ -488,9 +490,9 @@
     const detail = document.getElementById("booth-detail");
 
     const officialLinks = [
-      renderDetailLink(booth.urlSns, "公式SNS"),
-      renderDetailLink(booth.urlPage, "公式ページ")
-    ].filter(Boolean).join("");
+      renderDetailLink(booth.urlPage, "公式ページ"),
+      renderDetailLink(booth.urlSns, "公式SNS")
+    ].join("");
 
     const performerLinks = (booth.performerSns || [])
       .map(normalizePerformer)
@@ -504,10 +506,10 @@
         <button type="button" class="detail-close">一覧に戻る</button>
       </div>
       ${booth.desc ? `<p>${escapeHtml(booth.desc)}</p>` : ""}
-      ${officialLinks ? `<div class="detail-links">${officialLinks}</div>` : ""}
+      <div class="detail-links">${officialLinks}</div>
       ${performerLinks ? `
         <div class="detail-performers">
-          <h4>出演者SNS</h4>
+          <h4>出演者X</h4>
           <ul>${performerLinks}</ul>
         </div>
       ` : ""}
