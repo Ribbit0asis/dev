@@ -5,8 +5,18 @@
         "urlSns":  "https://x.com/4GamerNews",
         "urlPage":  "",
         "performerSns":  [
-                             { "name": "aaa", "url": "https://x.com/KT_Spot" },
-                             { "name": "bbb", "url": "https://x.com/Ribbit0asis" }
+                             {
+                                 "name":  "bbb",
+                                 "url":  "https://x.com/KT_Spot"
+                             },
+                             {
+                                 "name":  "aaa",
+                                 "url":  ""
+                             },
+                             {
+                                 "name":  "ccc",
+                                 "url":  "https://x.com/va_shop_info"
+                             }
                          ],
         "x":  1238,
         "y":  305,
@@ -32,7 +42,10 @@
         "urlSns":  "https://x.com/GTUNE_NEXTGEAR",
         "urlPage":  "https://www.mouse-jp.co.jp/store/e/ea1021602/?utm_source=x\u0026utm_medium=social_g\u0026utm_campaign=others\u0026utm_term=featured\u0026utm_content=260807a03",
         "performerSns":  [
-                             { "name": "ccc", "url": "https://x.com/va_shop_info" }
+                             {
+                                 "name":  "ccc",
+                                 "url":  "https://x.com/va_shop_info"
+                             }
                          ],
         "x":  1660,
         "y":  305,
