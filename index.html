@@ -61,6 +61,7 @@
   }
   #booth-detail.is-open {
     display: block;
+    border-radius: 10px;
   }
   .detail-header {
     display: flex;
@@ -131,13 +132,7 @@
     margin-top: 8px;
     max-width: 550px;
   }
-  .detail-posts-nav button {
-    padding: 4px 10px;
-    border: 1px solid #ccc;
-    background: #f5f5f5;
-    cursor: pointer;
-    font-size: 0.85em;
-  }
+
   .detail-posts-nav button:disabled {
     opacity: 0.4;
     cursor: default;
@@ -207,7 +202,8 @@
     text-overflow: ellipsis;
     min-width: 0;
   }
-  .booth-detail-btn {
+  .booth-detail-btn 
+  .detail-posts-nav button{
     flex-shrink: 0;
     padding: 4px 10px;
     border: 1px solid #ccc;
