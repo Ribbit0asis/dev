@@ -23,7 +23,7 @@
   }(document, "script", "twitter-wjs"));
 </script>
 <style>
-  body { margin: 0; display: flex; height: 100vh; }
+  body { margin: 0; display: flex; height: 100vh; height: 100dvh; }
   #viewer { flex: 2; }
   #sidebar {
     flex: 1;
@@ -248,9 +248,9 @@
   }
 
   @media (max-width: 700px) {
-    body { flex-direction: column; height: auto; min-height: 100vh; }
-    #viewer { flex: none; height: 37vh; }
-    #sidebar { flex: none; border-left: none; border-top: 1px solid #ccc; height: 59vh; }
+    body { flex-direction: column; height: auto; min-height: 100vh; min-height: 100dvh; }
+    #viewer { flex: none; height: 37vh; height: 37dvh; }
+    #sidebar { flex: none; border-left: none; border-top: 1px solid #ccc; height: 59vh; height: 59dvh; }
   }
 </style>
 </head>
