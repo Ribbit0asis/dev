@@ -5,6 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Event Map Viewer</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
+<script>
+  // X(Twitter)投稿の埋め込み用ウィジェットスクリプトを非同期で読み込む。
+  // twttr.ready() で登録した処理は、読み込み完了前に呼んでもキューイングされ後で実行される。
+  window.twttr = (function (d, s, id) {
+    const fjs = d.getElementsByTagName(s)[0];
+    const t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    const js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+    t._e = [];
+    t.ready = function (f) { t._e.push(f); };
+    return t;
+  }(document, "script", "twitter-wjs"));
+</script>
 <style>
   body { margin: 0; display: flex; height: 100vh; }
   #viewer { flex: 2; }
@@ -103,6 +119,14 @@
   }
   .detail-performers li {
     margin-bottom: 4px;
+  }
+  .detail-posts {
+    margin-top: 14px;
+  }
+  .detail-posts h4 {
+    margin: 0 0 6px;
+    font-size: 0.9em;
+    color: #555;
   }
   .tab-button {
     flex: 1;
@@ -500,6 +524,11 @@
       .filter(Boolean)
       .join("");
 
+    const posts = (booth.informationUrl || [])
+      .filter(url => url && isSafeUrl(url))
+      .map(url => `<blockquote class="twitter-tweet" data-dnt="true"><a href="${escapeHtml(url)}"></a></blockquote>`)
+      .join("");
+
     detail.innerHTML = `
       <div class="detail-header">
         <h3 class="detail-title">${escapeHtml(booth.name)}</h3>
@@ -513,11 +542,24 @@
           <ul>${performerLinks}</ul>
         </div>
       ` : ""}
+      ${posts ? `
+        <div class="detail-posts">
+          <h4>関連ポスト</h4>
+          ${posts}
+        </div>
+      ` : ""}
     `;
 
     detail.querySelector(".detail-close").addEventListener("click", closeBoothDetail);
     detail.classList.add("is-open");
     detail.querySelector(".detail-close").focus();
+    renderTwitterEmbeds(detail);
+  }
+
+  function renderTwitterEmbeds(container) {
+      if (window.twttr && window.twttr.ready) {
+          window.twttr.ready((t) => t.widgets.load(container));
+      }
   }
 
   function closeBoothDetail() {
