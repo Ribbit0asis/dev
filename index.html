@@ -84,6 +84,14 @@
   .detail-link:hover {
     background: #eef2ff;
   }
+  .detail-link--disabled {
+    border-color: #ccc;
+    color: #888;
+    cursor: default;
+  }
+  .detail-link--disabled:hover {
+    background: none;
+  }
   .detail-performers h4 {
     margin: 14px 0 4px;
     font-size: 0.9em;
@@ -198,11 +206,6 @@
 <body>
 <div id="viewer"></div>
 <div id="sidebar">
-  <blockquote class="twitter-tweet">
-    <a href="https://x.com/Ribbit0asis/status/2070836774797238382"></a>
-  </blockquote>
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
   <div class="tabs" role="tablist">
     <button type="button" class="tab-button tab-button--active" id="tab-all" role="tab" aria-selected="true" aria-controls="booth-list">ブース一覧</button>
     <button type="button" class="tab-button" id="tab-checked" role="tab" aria-selected="false" aria-controls="booth-list">チェック済み</button>
@@ -282,6 +285,23 @@
   function normalizePerformer(p) {
       if (typeof p === "string") return { name: "", url: p };
       return p || {};
+  }
+
+  // name / urlの有無で表示形式を切り替える。
+  // name+url → 「name（@ハンドル名）」のリンク / nameのみ → リンクなしでnameを表示 / urlのみ → urlそのままのリンク
+  function renderPerformerItem(p) {
+      const hasUrl = p.url && isSafeUrl(p.url);
+
+      if (p.name && hasUrl) {
+          return `<li>${renderDetailLink(p.url, `${p.name}（${extractSnsHandle(p.url)}）`)}</li>`;
+      }
+      if (p.name) {
+          return `<li><span class="detail-link detail-link--disabled">${escapeHtml(p.name)}</span></li>`;
+      }
+      if (hasUrl) {
+          return `<li>${renderDetailLink(p.url, p.url)}</li>`;
+      }
+      return "";
   }
 
   function loadPlannedBooths() {
@@ -474,8 +494,8 @@
 
     const performerLinks = (booth.performerSns || [])
       .map(normalizePerformer)
-      .filter(p => p.url && isSafeUrl(p.url))
-      .map(p => `<li>${renderDetailLink(p.url, p.name || extractSnsHandle(p.url))}</li>`)
+      .map(renderPerformerItem)
+      .filter(Boolean)
       .join("");
 
     detail.innerHTML = `
