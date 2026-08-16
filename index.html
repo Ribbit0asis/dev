@@ -41,19 +41,27 @@
 </div>
 
 <script>
+  // 画像やデータを更新したらここを更新してキャッシュを切り替える（毎回は不要）
+  const ASSET_VERSION = "1";
+
   let allBooths = [];
   let overlayInitialized = false;
 
   const viewer = OpenSeadragon({
     id: "viewer",
     prefixUrl: "images/",
-    tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi?v=" + Date.now(),
+    tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi?v=" + ASSET_VERSION,
     gestureSettingsMouse: {
       clickToZoom: false,
       dblClickToZoom: true,
       dragToPan: true,
       scrollToZoom: true
     }
+  });
+
+  viewer.addHandler("open-failed", (event) => {
+    console.error("地図画像の読み込みに失敗しました:", event);
+    document.getElementById("viewer").textContent = "地図の読み込みに失敗しました。時間をおいて再度お試しください。";
   });
 
   function escapeHtml(str) {
@@ -117,11 +125,14 @@
     `;
   }
 
-  fetch("json/booths.json?v=" + Date.now())
-    .then(r => r.json())
+  fetch("json/booths.json?v=" + ASSET_VERSION)
+    .then(r => {
+      if (!r.ok) throw new Error(`booths.json の取得に失敗しました (status: ${r.status})`);
+      return r.json();
+    })
     .then(booths => {
-      allBooths = booths;  // OpenSeadragon連動用
-      renderBoothList(booths);  // ★右側 UI を描画
+      allBooths = booths;
+      renderBoothList(booths);
       viewer.addHandler("tile-loaded", () => {
         if (overlayInitialized) return;
         overlayInitialized = true;
@@ -131,6 +142,11 @@
         const imageHeight = img.getContentSize().y;
 
         for (const booth of booths) {
+          if (![booth.x, booth.y, booth.w, booth.h].every(Number.isFinite)) {
+            console.warn("座標が不正なため booth をスキップしました:", booth.id);
+            continue;
+          }
+
           const rect = new OpenSeadragon.Rect(
             booth.x / imageWidth,
             booth.y / imageHeight,
@@ -144,7 +160,12 @@
           });
         }
       });
-  });
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById("booth-list").textContent =
+        "ブース情報の読み込みに失敗しました。時間をおいて再度お試しください。";
+    });
 
   viewer.addHandler("canvas-click", function(event) {
     const webPoint = event.position;
