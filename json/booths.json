@@ -5,9 +5,18 @@
         "urlSns":  "https://x.com/4GamerNews",
         "urlPage":  "",
         "performerSns":  [
-                             "https://x.com/KT_Spot",
-                             "none",
-                             "https://x.com/va_shop_info"
+                             {
+                                 "name":  "bbb",
+                                 "rl":  "https://x.com/KT_Spot"
+                             },
+                             {
+                                 "name":  "aaa",
+                                 "rl":  "none"
+                             },
+                             {
+                                 "name":  "ccc",
+                                 "rl":  "https://x.com/va_shop_info"
+                             }
                          ],
         "informationUrl":  [
 
@@ -61,7 +70,10 @@
         "urlSns":  "https://x.com/GTUNE_NEXTGEAR",
         "urlPage":  "https://www.mouse-jp.co.jp/store/e/ea1021602/?utm_source=x\u0026utm_medium=social_g\u0026utm_campaign=others\u0026utm_term=featured\u0026utm_content=260807a03",
         "performerSns":  [
-                             "https://x.com/va_shop_info"
+                             {
+                                 "name":  "ccc",
+                                 "rl":  "https://x.com/va_shop_info"
+                             }
                          ],
         "informationUrl":  [
 
