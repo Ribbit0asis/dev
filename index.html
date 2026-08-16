@@ -15,6 +15,31 @@
     padding: 10px;
     background: #fafafa;
   }
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+  .tab-button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.95em;
+    color: #666;
+    border-bottom: 2px solid transparent;
+  }
+  .tab-button--active {
+    color: #1a1a1a;
+    font-weight: bold;
+    border-bottom-color: #4a6fe0;
+  }
+  .booth-list-empty {
+    color: #888;
+    font-size: 0.9em;
+    padding: 8px 4px;
+  }
   .booth-item {
     display: flex;
     align-items: center;
@@ -86,8 +111,11 @@
 <body>
 <div id="viewer"></div>
 <div id="sidebar">
-  <h2>Booth List</h2>
-  <div id="booth-list"></div>
+  <div class="tabs" role="tablist">
+    <button type="button" class="tab-button tab-button--active" id="tab-all" role="tab" aria-selected="true" aria-controls="booth-list">ブース一覧</button>
+    <button type="button" class="tab-button" id="tab-checked" role="tab" aria-selected="false" aria-controls="booth-list">チェック済み</button>
+  </div>
+  <div id="booth-list" role="tabpanel"></div>
   <div id="booth-detail"></div>
 </div>
 
@@ -99,6 +127,7 @@
   let allBooths = [];
   let overlayInitialized = false;
   let activeBoothId = null;
+  let activeTab = "all"; // "all" | "checked"
   let boothRects = {};          // boothId -> OpenSeadragon.Rect（地図連動用）
   let boothListItems = {};      // boothId -> 一覧のDOM要素
   let boothOverlayElements = {}; // boothId -> 地図オーバーレイのDOM要素
@@ -167,7 +196,29 @@
 
       const overlay = boothOverlayElements[boothId];
       if (overlay) overlay.classList.toggle("booth-overlay--planned", isPlanned);
+
+      // 「チェック済み」タブ表示中にチェックを外したら一覧からも消す
+      if (activeTab === "checked") renderBoothList();
   }
+
+  function getVisibleBooths() {
+      if (activeTab === "checked") {
+          return allBooths.filter(b => plannedBoothIds.has(b.id));
+      }
+      return allBooths;
+  }
+
+  function setActiveTab(tab) {
+      activeTab = tab;
+      document.getElementById("tab-all").classList.toggle("tab-button--active", tab === "all");
+      document.getElementById("tab-all").setAttribute("aria-selected", String(tab === "all"));
+      document.getElementById("tab-checked").classList.toggle("tab-button--active", tab === "checked");
+      document.getElementById("tab-checked").setAttribute("aria-selected", String(tab === "checked"));
+      renderBoothList();
+  }
+
+  document.getElementById("tab-all").addEventListener("click", () => setActiveTab("all"));
+  document.getElementById("tab-checked").addEventListener("click", () => setActiveTab("checked"));
 
   function setActiveBooth(boothId) {
       if (activeBoothId != null) {
@@ -248,10 +299,22 @@
       return div;
   }
 
-  function renderBoothList(booths) {
+  function renderBoothList() {
     const list = document.getElementById("booth-list");
     list.innerHTML = "";
     boothListItems = {};
+
+    const booths = getVisibleBooths();
+
+    if (booths.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "booth-list-empty";
+      empty.textContent = activeTab === "checked"
+        ? "チェックされたブースはありません。"
+        : "ブース情報がありません。";
+      list.appendChild(empty);
+      return;
+    }
 
     for (const booth of booths) {
       const item = document.createElement("div");
@@ -301,7 +364,7 @@
     })
     .then(booths => {
       allBooths = booths;
-      renderBoothList(booths);
+      renderBoothList();
       viewer.addHandler("tile-loaded", () => {
         if (overlayInitialized) return;
         overlayInitialized = true;
