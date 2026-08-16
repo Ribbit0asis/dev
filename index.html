@@ -170,18 +170,27 @@
       if (overlay) overlay.classList.add("booth-overlay--active");
   }
 
+  // 表示範囲（ブース周囲の余白込みサイズ）の下限・上限。画像全体の幅を1とした割合。
+  // 小さいブースでズームインしすぎない下限、大きいブースでズームアウトしすぎない上限を決める。
+  const MIN_FOCUS_CONTEXT = 0.05;
+  const MAX_FOCUS_CONTEXT = 0.3;
+
   function focusBoothOnMap(boothId) {
       const rect = boothRects[boothId];
       if (!rect) return; // 地図側の初期化が終わっていない場合は何もしない
 
-      const paddingFactor = 6; // ブースの周囲も見えるよう余白を持たせる
-      const w = rect.width * paddingFactor;
-      const h = rect.height * paddingFactor;
+      const boothSize = Math.max(rect.width, rect.height);
+      const contextSize = Math.min(MAX_FOCUS_CONTEXT, Math.max(MIN_FOCUS_CONTEXT, boothSize * 3));
+      const boxSize = Math.max(contextSize, rect.width, rect.height); // ブース全体は必ず収める
+
+      const centerX = rect.x + rect.width / 2;
+      const centerY = rect.y + rect.height / 2;
+
       const padded = new OpenSeadragon.Rect(
-          rect.x - (w - rect.width) / 2,
-          rect.y - (h - rect.height) / 2,
-          w,
-          h
+          centerX - boxSize / 2,
+          centerY - boxSize / 2,
+          boxSize,
+          boxSize
       );
       viewer.viewport.fitBounds(padded, false);
   }
