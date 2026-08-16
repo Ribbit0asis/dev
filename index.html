@@ -544,7 +544,6 @@
 
         const img = viewer.world.getItemAt(0);
         const imageWidth = img.getContentSize().x;
-        const imageHeight = img.getContentSize().y;
 
         for (const booth of booths) {
           if (![booth.x, booth.y, booth.w, booth.h].every(Number.isFinite)) {
@@ -552,11 +551,12 @@
             continue;
           }
 
+          // OpenSeadragonのビューポート座標はx/y/width/heightすべてを画像の「幅」で正規化する
           const rect = new OpenSeadragon.Rect(
             booth.x / imageWidth,
-            booth.y / imageHeight,
+            booth.y / imageWidth,
             booth.w / imageWidth,
-            booth.h / imageHeight
+            booth.h / imageWidth
           );
           boothRects[booth.id] = rect;
 
