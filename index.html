@@ -10,15 +10,48 @@
   #viewer { flex: 2; }
   #sidebar {
     flex: 1;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     border-left: 1px solid #ccc;
     padding: 10px;
     background: #fafafa;
   }
   .tabs {
     display: flex;
+    flex-shrink: 0;
     border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
+  }
+  .list-panel {
+    position: relative;
+    flex: 1;
+    min-height: 0; /* flex子要素を正しく縮小させ、内部スクロールを機能させるために必要 */
+  }
+  #booth-list {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+  }
+  #booth-detail {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    display: none;
+  }
+  #booth-detail.is-open {
+    display: block;
+  }
+  .detail-close {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+    cursor: pointer;
   }
   .tab-button {
     flex: 1;
@@ -115,8 +148,10 @@
     <button type="button" class="tab-button tab-button--active" id="tab-all" role="tab" aria-selected="true" aria-controls="booth-list">ブース一覧</button>
     <button type="button" class="tab-button" id="tab-checked" role="tab" aria-selected="false" aria-controls="booth-list">チェック済み</button>
   </div>
-  <div id="booth-list" role="tabpanel"></div>
-  <div id="booth-detail"></div>
+  <div class="list-panel">
+    <div id="booth-list" role="tabpanel"></div>
+    <div id="booth-detail"></div>
+  </div>
 </div>
 
 <script>
@@ -214,6 +249,7 @@
       document.getElementById("tab-all").setAttribute("aria-selected", String(tab === "all"));
       document.getElementById("tab-checked").classList.toggle("tab-button--active", tab === "checked");
       document.getElementById("tab-checked").setAttribute("aria-selected", String(tab === "checked"));
+      closeBoothDetail();
       renderBoothList();
   }
 
@@ -351,11 +387,26 @@
     const detail = document.getElementById("booth-detail");
 
     detail.innerHTML = `
+      <button type="button" class="detail-close">&larr; 一覧に戻る</button>
       <h3>${escapeHtml(booth.name)}</h3>
       <p>${escapeHtml(booth.desc || "")}</p>
       ${booth.url && isSafeUrl(booth.url) ? `<a href="${escapeHtml(booth.url)}" target="_blank" rel="noopener noreferrer">公式サイト</a>` : ""}
     `;
+
+    detail.querySelector(".detail-close").addEventListener("click", closeBoothDetail);
+    detail.classList.add("is-open");
+    detail.querySelector(".detail-close").focus();
   }
+
+  function closeBoothDetail() {
+    const detail = document.getElementById("booth-detail");
+    detail.classList.remove("is-open");
+    detail.innerHTML = "";
+  }
+
+  document.getElementById("booth-detail").addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeBoothDetail();
+  });
 
   fetch("json/booths.json?v=" + ASSET_VERSION)
     .then(r => {
