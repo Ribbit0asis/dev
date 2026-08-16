@@ -40,6 +40,18 @@
     border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
   }
+  .search-box {
+    flex-shrink: 0;
+    margin-bottom: 10px;
+  }
+  .search-box input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
   .list-panel {
     position: relative;
     flex: 1;
@@ -258,9 +270,12 @@
 <div id="viewer"></div>
 <div id="sidebar">
   <div class="tabs" role="tablist">
-    <button type="button" class="tab-button tab-button--active">ブース検索</button>
+    <button type="button" class="tab-button" id="tab-search" role="tab" aria-selected="false" aria-controls="booth-list">検索</button>
     <button type="button" class="tab-button tab-button--active" id="tab-all" role="tab" aria-selected="true" aria-controls="booth-list">ブース一覧</button>
     <button type="button" class="tab-button" id="tab-checked" role="tab" aria-selected="false" aria-controls="booth-list">チェック済み</button>
+  </div>
+  <div class="search-box" id="search-box" hidden>
+    <input type="search" id="search-input" placeholder="ブース番号または名前で検索" aria-label="ブース番号または名前で検索">
   </div>
   <div class="list-panel">
     <div id="booth-list" role="tabpanel"></div>
@@ -276,7 +291,8 @@
   let allBooths = [];
   let overlayInitialized = false;
   let activeBoothId = null;
-  let activeTab = "all"; // "all" | "checked"
+  let activeTab = "all"; // "all" | "checked" | "search"
+  let searchQuery = "";
   let boothRects = {};          // boothId -> OpenSeadragon.Rect（地図連動用）
   let boothListItems = {};      // boothId -> 一覧のDOM要素
   let boothOverlayElements = {}; // boothId -> 地図オーバーレイのDOM要素
@@ -394,6 +410,14 @@
       if (activeTab === "checked") {
           return allBooths.filter(b => plannedBoothIds.has(b.id));
       }
+      if (activeTab === "search") {
+          const q = searchQuery.trim().toLowerCase();
+          if (!q) return [];
+          return allBooths.filter(b =>
+              (b.id && b.id.toLowerCase().startsWith(q)) ||
+              (b.name && b.name.toLowerCase().startsWith(q))
+          );
+      }
       return allBooths;
   }
 
@@ -403,12 +427,21 @@
       document.getElementById("tab-all").setAttribute("aria-selected", String(tab === "all"));
       document.getElementById("tab-checked").classList.toggle("tab-button--active", tab === "checked");
       document.getElementById("tab-checked").setAttribute("aria-selected", String(tab === "checked"));
+      document.getElementById("tab-search").classList.toggle("tab-button--active", tab === "search");
+      document.getElementById("tab-search").setAttribute("aria-selected", String(tab === "search"));
+      document.getElementById("search-box").hidden = tab !== "search";
       closeBoothDetail();
       renderBoothList();
+      if (tab === "search") document.getElementById("search-input").focus();
   }
 
   document.getElementById("tab-all").addEventListener("click", () => setActiveTab("all"));
   document.getElementById("tab-checked").addEventListener("click", () => setActiveTab("checked"));
+  document.getElementById("tab-search").addEventListener("click", () => setActiveTab("search"));
+  document.getElementById("search-input").addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      renderBoothList();
+  });
 
   function setActiveBooth(boothId) {
       if (activeBoothId != null) {
@@ -493,9 +526,15 @@
     if (booths.length === 0) {
       const empty = document.createElement("p");
       empty.className = "booth-list-empty";
-      empty.textContent = activeTab === "checked"
-        ? "チェックされたブースはありません。"
-        : "ブース情報がありません。";
+      if (activeTab === "checked") {
+        empty.textContent = "チェックされたブースはありません。";
+      } else if (activeTab === "search") {
+        empty.textContent = searchQuery.trim()
+          ? "該当するブースが見つかりません。"
+          : "ブース番号または名前を入力してください。";
+      } else {
+        empty.textContent = "ブース情報がありません。";
+      }
       list.appendChild(empty);
       return;
     }
