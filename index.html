@@ -132,7 +132,17 @@
     margin-top: 8px;
     max-width: 550px;
   }
-
+  .detail-posts-nav button {
+    padding: 4px 10px;
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+    cursor: pointer;
+    font-size: 0.85em;
+  }
+  .detail-posts-nav button:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
   .detail-posts-page {
     font-size: 0.85em;
     color: #666;
@@ -556,9 +566,9 @@
         <div class="detail-posts">
           <h4>関連ポスト</h4>
           <div class="detail-posts-nav">
-            <button type="button" class="detail-posts-prev detail-link" aria-label="前のポスト">← 前へ</button>
+            <button type="button" class="detail-posts-prev" aria-label="前のポスト">← 前へ</button>
             <span class="detail-posts-page"></span>
-            <button type="button" class="detail-posts-next detail-link" aria-label="次のポスト">次へ →</button>
+            <button type="button" class="detail-posts-next" aria-label="次のポスト">次へ →</button>
           </div>
           <div class="detail-posts-embed"></div>
         </div>
