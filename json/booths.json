@@ -2,25 +2,41 @@
     {
         "id":  "01-S01",
         "name":  "4Gamer.net",
+        "urlSns":  "https://x.com/4GamerNews",
+        "urlPage":  "",
+        "performerSns":  [
+                             "https://x.com/KT_Spot",
+                             "https://x.com/Ribbit0asis"
+                         ],
         "x":  1238,
         "y":  305,
         "w":  320,
-        "h":  110
+        "h":  105
     },
     {
-        "id":  "08-N6",
+        "id":  "03-C03",
+        "name":  "test hall 03",
+        "urlSns":  "https://x.com/tokyo_game_show",
+        "urlPage":  "https://tgs.cesa.or.jp/2026/",
+        "performerSns":  [
+
+                         ],
+        "x":  1134,
+        "y":  1046,
+        "w":  183,
+        "h":  170
+    },
+    {
+        "id":  "08-N06",
         "name":  "G TUNE·NEXTGEAR(マウスコンピューター)",
+        "urlSns":  "https://x.com/GTUNE_NEXTGEAR",
+        "urlPage":  "https://www.mouse-jp.co.jp/store/e/ea1021602/?utm_source=x\u0026utm_medium=social_g\u0026utm_campaign=others\u0026utm_term=featured\u0026utm_content=260807a03",
+        "performerSns":  [
+                             "https://x.com/va_shop_info"
+                         ],
         "x":  1660,
         "y":  305,
         "w":  1090,
-        "h":  110
-    },
-    {
-        "id":  "01-N1",
-        "name":  "test hall 01",
-        "x":  300,
-        "y":  100,
-        "w":  50,
-        "h":  50
+        "h":  105
     }
 ]

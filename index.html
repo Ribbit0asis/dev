@@ -66,6 +66,36 @@
     background: #f5f5f5;
     cursor: pointer;
   }
+  .detail-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  .detail-link {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid #4a6fe0;
+    border-radius: 4px;
+    color: #4a6fe0;
+    text-decoration: none;
+    font-size: 0.9em;
+  }
+  .detail-link:hover {
+    background: #eef2ff;
+  }
+  .detail-performers h4 {
+    margin: 14px 0 4px;
+    font-size: 0.9em;
+    color: #555;
+  }
+  .detail-performers ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .detail-performers li {
+    margin-bottom: 4px;
+  }
   .tab-button {
     flex: 1;
     padding: 8px;
@@ -225,6 +255,21 @@
           return u.protocol === "http:" || u.protocol === "https:";
       } catch {
           return false;
+      }
+  }
+
+  function renderDetailLink(url, label) {
+      if (!url || !isSafeUrl(url)) return "";
+      return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="detail-link">${escapeHtml(label)}</a>`;
+  }
+
+  // SNSのURLから「@ハンドル名」を取り出す。取れない場合はURLをそのまま表示する。
+  function extractSnsHandle(url) {
+      try {
+          const path = new URL(url).pathname.replace(/^\/|\/$/g, "");
+          return path ? `@${path}` : url;
+      } catch {
+          return url;
       }
   }
 
@@ -411,13 +456,29 @@
   function showBoothDetail(booth) {
     const detail = document.getElementById("booth-detail");
 
+    const officialLinks = [
+      renderDetailLink(booth.urlSns, "公式SNS"),
+      renderDetailLink(booth.urlPage, "公式ページ")
+    ].filter(Boolean).join("");
+
+    const performerLinks = (booth.performerSns || [])
+      .filter(url => url && isSafeUrl(url))
+      .map(url => `<li>${renderDetailLink(url, extractSnsHandle(url))}</li>`)
+      .join("");
+
     detail.innerHTML = `
       <div class="detail-header">
         <h3 class="detail-title">${escapeHtml(booth.name)}</h3>
         <button type="button" class="detail-close">一覧に戻る</button>
       </div>
-      <p>${escapeHtml(booth.desc || "")}</p>
-      ${booth.url && isSafeUrl(booth.url) ? `<a href="${escapeHtml(booth.url)}" target="_blank" rel="noopener noreferrer">公式サイト</a>` : ""}
+      ${booth.desc ? `<p>${escapeHtml(booth.desc)}</p>` : ""}
+      ${officialLinks ? `<div class="detail-links">${officialLinks}</div>` : ""}
+      ${performerLinks ? `
+        <div class="detail-performers">
+          <h4>出演者SNS</h4>
+          <ul>${performerLinks}</ul>
+        </div>
+      ` : ""}
     `;
 
     detail.querySelector(".detail-close").addEventListener("click", closeBoothDetail);
