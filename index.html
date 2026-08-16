@@ -278,6 +278,12 @@
       }
   }
 
+  // performerSnsは { name, url } を想定。旧形式（URL文字列のみ）が残っていても表示できるようにする。
+  function normalizePerformer(p) {
+      if (typeof p === "string") return { name: "", url: p };
+      return p || {};
+  }
+
   function loadPlannedBooths() {
       try {
           const raw = localStorage.getItem(PLANNED_BOOTHS_KEY);
@@ -467,8 +473,9 @@
     ].filter(Boolean).join("");
 
     const performerLinks = (booth.performerSns || [])
-      .filter(url => url && isSafeUrl(url))
-      .map(url => `<li>${renderDetailLink(url, extractSnsHandle(url))}</li>`)
+      .map(normalizePerformer)
+      .filter(p => p.url && isSafeUrl(p.url))
+      .map(p => `<li>${renderDetailLink(p.url, p.name || extractSnsHandle(p.url))}</li>`)
       .join("");
 
     detail.innerHTML = `
