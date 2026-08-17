@@ -116,25 +116,40 @@
   .detail-link--disabled:hover {
     background: none;
   }
-  .detail-performers h4 {
-    margin: 14px 0 4px;
-    font-size: 0.9em;
-    color: #555;
-  }
-  .detail-performers ul {
-    margin: 0;
-    padding-left: 18px;
-  }
-  .detail-performers li {
-    margin-bottom: 4px;
-  }
-  .detail-posts {
+  .detail-sections {
     margin-top: 14px;
   }
-  .detail-posts h4 {
+  .detail-sections > h4 {
     margin: 0 0 6px;
     font-size: 0.9em;
     color: #555;
+  }
+  .detail-tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 8px;
+  }
+  .detail-tab-button {
+    padding: 4px 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.85em;
+    color: #666;
+    border-bottom: 2px solid transparent;
+  }
+  .detail-tab-button--active {
+    color: #1a1a1a;
+    font-weight: bold;
+    border-bottom-color: #4a6fe0;
+  }
+  .detail-tab-panel ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .detail-tab-panel li {
+    margin-bottom: 4px;
   }
   .detail-posts-nav {
     display: flex;
@@ -594,6 +609,22 @@
 
     const postUrls = (booth.informationUrl || []).filter(url => url && isSafeUrl(url));
 
+    // 表示するセクションを決定。先頭に来たものが初期表示のタブになる。
+    const sections = [];
+    if (postUrls.length) sections.push({ key: "posts", label: "関連ポスト" });
+    if (performerLinks) sections.push({ key: "performers", label: "出演者（Xアカウント）" });
+
+    const postsPanelHtml = `
+      <div class="detail-posts-nav">
+        <button type="button" class="detail-posts-prev" aria-label="前のポスト">← 前へ</button>
+        <span class="detail-posts-page"></span>
+        <button type="button" class="detail-posts-next" aria-label="次のポスト">次へ →</button>
+      </div>
+      <div class="detail-posts-embed"></div>
+    `;
+    const performersPanelHtml = `<ul>${performerLinks}</ul>`;
+    const panelHtml = { posts: postsPanelHtml, performers: performersPanelHtml };
+
     detail.innerHTML = `
       <div class="detail-header">
         <h3 class="detail-title">${escapeHtml(booth.name)}</h3>
@@ -601,30 +632,59 @@
       </div>
       ${booth.desc ? `<p>${escapeHtml(booth.desc)}</p>` : ""}
       <div class="detail-links">${officialLinks}</div>
-      ${performerLinks ? `
-        <div class="detail-performers">
-          <h4>出演者（Xアカウント）</h4>
-          <ul>${performerLinks}</ul>
-        </div>
-      ` : ""}
-      ${postUrls.length ? `
-        <div class="detail-posts">
-          <h4>関連ポスト</h4>
-          <div class="detail-posts-nav">
-            <button type="button" class="detail-posts-prev" aria-label="前のポスト">← 前へ</button>
-            <span class="detail-posts-page"></span>
-            <button type="button" class="detail-posts-next" aria-label="次のポスト">次へ →</button>
-          </div>
-          <div class="detail-posts-embed"></div>
+      ${sections.length ? `
+        <div class="detail-sections">
+          ${sections.length > 1 ? `
+            <div class="detail-tabs" role="tablist">
+              ${sections.map((s, i) => `
+                <button type="button" class="detail-tab-button${i === 0 ? " detail-tab-button--active" : ""}" data-detail-tab="${s.key}" role="tab" aria-selected="${i === 0}">${escapeHtml(s.label)}</button>
+              `).join("")}
+            </div>
+          ` : `<h4>${escapeHtml(sections[0].label)}</h4>`}
+          ${sections.map((s, i) => `
+            <div class="detail-tab-panel" data-detail-panel="${s.key}" ${i === 0 ? "" : "hidden"}>${panelHtml[s.key]}</div>
+          `).join("")}
         </div>
       ` : ""}
     `;
 
-    if (postUrls.length) setupPostPager(detail, postUrls);
+    initDetailTabs(detail, sections, postUrls);
 
     detail.querySelector(".detail-close").addEventListener("click", closeBoothDetail);
     detail.classList.add("is-open");
     detail.querySelector(".detail-close").focus();
+  }
+
+  // 詳細画面内の「関連ポスト」「出演者」サブタブを切り替える。
+  // postsパネルは実際に表示されたタイミングで初めて埋め込み処理を行う
+  // (非表示のままTwitter埋め込みを生成すると正しく描画されないため)。
+  function initDetailTabs(detail, sections, postUrls) {
+      if (!sections.length) return;
+
+      const buttons = detail.querySelectorAll(".detail-tab-button");
+      let postsInitialized = false;
+
+      function activate(key) {
+          buttons.forEach((btn) => {
+              const active = btn.dataset.detailTab === key;
+              btn.classList.toggle("detail-tab-button--active", active);
+              btn.setAttribute("aria-selected", String(active));
+          });
+          detail.querySelectorAll(".detail-tab-panel").forEach((panel) => {
+              panel.hidden = panel.dataset.detailPanel !== key;
+          });
+          if (key === "posts" && !postsInitialized) {
+              postsInitialized = true;
+              const postsPanel = detail.querySelector('.detail-tab-panel[data-detail-panel="posts"]');
+              if (postsPanel) setupPostPager(postsPanel, postUrls);
+          }
+      }
+
+      buttons.forEach((btn) => {
+          btn.addEventListener("click", () => activate(btn.dataset.detailTab));
+      });
+
+      activate(sections[0].key);
   }
 
   function renderTwitterEmbeds(container) {
