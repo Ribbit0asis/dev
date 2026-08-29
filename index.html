@@ -42,7 +42,7 @@
   .help-button {
     flex-shrink: 0;
     padding: 4px 12px;
-    border: 1px solid #fff;
+    border: none;
     border-radius: 4px;
     background: transparent;
     color: #fff;
@@ -189,10 +189,14 @@
   }
   .detail-title {
     margin: 0;
+    flex: 1;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .detail-check {
+    flex-shrink: 0;
   }
 
   .detail-links {
@@ -399,29 +403,33 @@
       <button type="button" id="help-close" class="help-close-btn" aria-label="ヘルプを閉じる">×</button>
     </div>
     <div class="help-modal-body">
+      <h3>はじめに</h3>
+      <ul>
+        <li>本ページは@Forest_No_Moriが個人で運営する非公式の情報まとめサイトです。</li>
+        <li>主にX（旧Twitter）に投稿された情報をまとめています。</li>
+        <li>情報は手動で追加していますので、間違いや抜け漏れがある場合がございます。予めご了承ください。</li>
+      </ul>
       <h3>地図の操作</h3>
       <ul>
-        <li>ドラッグで地図を移動、ホイール操作(またはピンチ操作)で拡大・縮小できます。</li>
-        <li>ダブルクリックでその場所を拡大できます。</li>
-        <li>地図上の色つきの枠(ブースの場所)をクリックするとブース詳細が開きます。</li>
+        <li>地図は移動、拡大・縮小できます。</li>
+        <li>地図上のブースの場所をクリックするとブース詳細が開きます。</li>
       </ul>
       <h3>ブース一覧</h3>
       <ul>
-        <li>上部のタブで「ブース一覧」「チェック済み」「検索」を切り替えられます。</li>
-        <li>チェックボックスで「行く予定」のブースを保存できます(ブラウザに記憶され、次回アクセス時も保持されます)。チェックすると地図上の枠の色も変わります。</li>
         <li>ブース番号・名前をクリックすると地図がそのブースへ移動します。</li>
         <li>「詳細」ボタンでブースの詳細情報を表示します。</li>
+        <li>気になるブースにチェックを付けると「チェック済み」に保存できます。(ブラウザに記憶され、次回アクセス時も保持されます)
+          <br>チェックを付けると地図上のブースの色が変わります。</li>
       </ul>
       <h3>検索</h3>
       <ul>
-        <li>「検索」タブでブース番号または名前の先頭部分を入力すると、該当するブースだけが一覧に表示されます。</li>
+        <li>「検索」タブではブース番号またはブース名で検索ができます。</li>
       </ul>
       <h3>ブース詳細</h3>
       <ul>
-        <li>公式SNS・公式ページ・出演者(Xアカウント)・関連ポストを確認できます。</li>
+        <li>公式SNS・公式ページ・関連ポストなどを確認できます。</li>
         <li>「一覧に戻る」ボタンで詳細を閉じ、一覧表示に戻ります。</li>
       </ul>
-      <p>※ このヘルプは仮の内容です。今後の実装に合わせて更新予定です。</p>
     </div>
   </div>
 </div>
@@ -561,6 +569,20 @@
 
       const overlay = boothOverlayElements[boothId];
       if (overlay) overlay.classList.toggle("booth-overlay--planned", isPlanned);
+
+      // 一覧側のチェックボックスと状態を同期する
+      const listItem = boothListItems[boothId];
+      if (listItem) {
+          const listCheck = listItem.querySelector(".booth-check");
+          if (listCheck) listCheck.checked = isPlanned;
+      }
+
+      // 詳細パネルが同じブースを表示中なら、そちらのチェックボックスとも同期する
+      const detail = document.getElementById("booth-detail");
+      if (detail.dataset.boothId === boothId) {
+          const detailCheck = detail.querySelector(".detail-check");
+          if (detailCheck) detailCheck.checked = isPlanned;
+      }
 
       // 「チェック済み」タブ表示中にチェックを外したら一覧からも消す
       if (activeTab === "checked") renderBoothList();
@@ -770,8 +792,11 @@
     const performersPanelHtml = `<ul>${performerLinks}</ul>`;
     const panelHtml = { posts: postsPanelHtml, performers: performersPanelHtml };
 
+    detail.dataset.boothId = booth.id;
+
     detail.innerHTML = `
       <div class="detail-header">
+        <input type="checkbox" class="detail-check" id="detail-check-${booth.id}" aria-label="${escapeHtml(booth.name)} に行く" ${plannedBoothIds.has(booth.id) ? "checked" : ""}>
         <h3 class="detail-title">${escapeHtml(booth.name)}</h3>
         <button type="button" class="detail-close booth-detail-btn">一覧に戻る</button>
       </div>
@@ -795,6 +820,9 @@
 
     initDetailTabs(detail, sections, postUrls);
 
+    detail.querySelector(".detail-check").addEventListener("change", (e) => {
+        togglePlanned(booth.id, e.target.checked);
+    });
     detail.querySelector(".detail-close").addEventListener("click", closeBoothDetail);
     detail.classList.add("is-open");
     detail.querySelector(".detail-close").focus();
@@ -871,6 +899,7 @@
     const detail = document.getElementById("booth-detail");
     detail.classList.remove("is-open");
     detail.innerHTML = "";
+    delete detail.dataset.boothId;
   }
 
   document.getElementById("booth-detail").addEventListener("keydown", (e) => {
