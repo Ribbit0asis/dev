@@ -23,7 +23,26 @@
   }(document, "script", "twitter-wjs"));
 </script>
 <style>
-  body { margin: 0; display: flex; height: 100vh; height: 100dvh; }
+  body { margin: 0; display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+  #app-header {
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 48px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    background: #000;
+    color: #fff;
+    font-weight: bold;
+    z-index: 100;
+  }
+  #app-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+  }
   #viewer { flex: 2; }
   #sidebar {
     flex: 1;
@@ -275,13 +294,15 @@
   }
 
   @media (max-width: 700px) {
-    body { flex-direction: column; height: auto; min-height: 100vh; min-height: 100dvh; }
-    #viewer { flex: none; height: 37vh; height: 37dvh; }
-    #sidebar { flex: none; border-left: none; border-top: 1px solid #ccc; height: 59vh; height: 59dvh; }
+    #app-body { flex-direction: column; }
+    #viewer { flex: 37 1 0; }
+    #sidebar { flex: 59 1 0; border-left: none; border-top: 1px solid #ccc; }
   }
 </style>
 </head>
 <body>
+<header id="app-header">Event Map Viewer</header>
+<div id="app-body">
 <div id="viewer"></div>
 <div id="sidebar">
   <div class="tabs" role="tablist">
@@ -296,6 +317,7 @@
     <div id="booth-list" role="tabpanel"></div>
     <div id="booth-detail"></div>
   </div>
+</div>
 </div>
 
 <script>
