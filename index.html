@@ -383,11 +383,31 @@
     outline-offset: 1px;
   }
 
+  .sidebar-toggle-btn {
+    display: none;
+    flex-shrink: 0;
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 4px;
+    background: #eee;
+    color: #333;
+    cursor: pointer;
+    font-size: 0.85em;
+  }
+  .sidebar-toggle-btn:hover {
+    background: #e0e0e0;
+  }
+
   @media (max-width: 700px) {
     #app-header { height: 24px; font-size: 12px; }
     #app-body { flex-direction: column; }
     #viewer { flex: 37 1 0; }
     #sidebar { flex: 59 1 0; border-left: none; border-top: 1px solid #ccc; }
+    .sidebar-toggle-btn { display: block; }
+    #app-body.sidebar-expanded #viewer { display: none; }
+    #app-body.sidebar-expanded #sidebar { flex: 1 1 auto; }
   }
 </style>
 </head>
@@ -436,6 +456,7 @@
 <div id="app-body">
 <div id="viewer"></div>
 <div id="sidebar">
+  <button type="button" id="sidebar-toggle" class="sidebar-toggle-btn" aria-expanded="false">▲ 全画面表示</button>
   <div class="tabs" role="tablist">
     <button type="button" class="tab-button" id="tab-search" role="tab" aria-selected="false" aria-controls="booth-list">検索</button>
     <button type="button" class="tab-button tab-button--active" id="tab-all" role="tab" aria-selected="true" aria-controls="booth-list">ブース一覧</button>
@@ -481,6 +502,25 @@
   viewer.addHandler("open-failed", (event) => {
     console.error("地図画像の読み込みに失敗しました:", event);
     document.getElementById("viewer").textContent = "地図の読み込みに失敗しました。時間をおいて再度お試しください。";
+  });
+
+  // スマートフォン幅: ブース情報エリアを半分表示/全画面表示で切り替える
+  let sidebarExpanded = false;
+
+  function setSidebarExpanded(expanded) {
+      sidebarExpanded = expanded;
+      document.getElementById("app-body").classList.toggle("sidebar-expanded", expanded);
+      const btn = document.getElementById("sidebar-toggle");
+      btn.textContent = expanded ? "▼ 地図を表示" : "▲ 全画面表示";
+      btn.setAttribute("aria-expanded", String(expanded));
+      if (!expanded) {
+          // 地図を再表示した際、OpenSeadragonのキャンバスサイズを再計算させる
+          window.dispatchEvent(new Event("resize"));
+      }
+  }
+
+  document.getElementById("sidebar-toggle").addEventListener("click", () => {
+      setSidebarExpanded(!sidebarExpanded);
   });
 
   function escapeHtml(str) {
