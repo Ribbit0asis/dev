@@ -291,6 +291,7 @@
     gap: 10px;
     margin-top: 8px;
     max-width: 550px;
+    min-height: 1000px;
   }
   .detail-posts-nav button {
     display: inline-block;
@@ -891,9 +892,9 @@
     }
     const postsPanelHtml = renderPostsPagerHtml();
     const performersPanelHtml = `
-      ${performerPostUrls.length ? renderPostsPagerHtml() : ""}
-      ${performerPostUrls.length > 0 && performerLinks.length > 0 ? '<hr class="detai-hr">' : ""}
       ${performerLinks ? `<ul>${performerLinks}</ul>` : ""}
+      ${performerPostUrls.length > 0 && performerLinks.length > 0 ? '<hr class="detai-hr">' : ""}
+      ${performerPostUrls.length ? renderPostsPagerHtml() : ""}
     `;
     const panelHtml = { posts: postsPanelHtml, performers: performersPanelHtml };
 
