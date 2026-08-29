@@ -294,6 +294,21 @@
   }
 
   @media (max-width: 700px) {
+    #app-header {
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 24px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    background: #000;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    z-index: 100;
+  }
     #app-body { flex-direction: column; }
     #viewer { flex: 37 1 0; }
     #sidebar { flex: 59 1 0; border-left: none; border-top: 1px solid #ccc; }
