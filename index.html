@@ -426,6 +426,11 @@
     #app-body.sidebar-expanded #viewer { display: none; }
     #app-body.sidebar-expanded #sidebar { flex: 1 1 auto; }
   }
+
+  /* 開発者用フラグ SHOW_MAP が false のとき、マップを非表示にしてブース一覧に全領域を使わせる */
+  body.map-hidden #viewer { display: none; }
+  body.map-hidden #sidebar { flex: 1 1 auto; border: none; }
+  body.map-hidden .sidebar-toggle-btn { display: none; }
 </style>
 </head>
 <body>
@@ -490,6 +495,9 @@
 </div>
 
 <script>
+  // マップ画像が未公開の間は false にしておく。公開可能になったら true に変更する。
+  const SHOW_MAP = false;
+
   // 画像やデータを更新したらここを更新してキャッシュを切り替える（毎回は不要）
   const ASSET_VERSION = "1";
   const PLANNED_BOOTHS_KEY = "eventMapViewer.plannedBooths";
@@ -504,7 +512,7 @@
   let boothOverlayElements = {}; // boothId -> 地図オーバーレイのDOM要素
   let plannedBoothIds = loadPlannedBooths();
 
-  const viewer = OpenSeadragon({
+  const viewer = SHOW_MAP ? OpenSeadragon({
     id: "viewer",
     prefixUrl: "images/",
     tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi?v=" + ASSET_VERSION,
@@ -514,12 +522,16 @@
       dragToPan: true,
       scrollToZoom: true
     }
-  });
+  }) : null;
 
-  viewer.addHandler("open-failed", (event) => {
-    console.error("地図画像の読み込みに失敗しました:", event);
-    document.getElementById("viewer").textContent = "地図の読み込みに失敗しました。時間をおいて再度お試しください。";
-  });
+  if (!SHOW_MAP) document.body.classList.add("map-hidden");
+
+  if (viewer) {
+    viewer.addHandler("open-failed", (event) => {
+      console.error("地図画像の読み込みに失敗しました:", event);
+      document.getElementById("viewer").textContent = "地図の読み込みに失敗しました。時間をおいて再度お試しください。";
+    });
+  }
 
   // スマートフォン幅: ブース情報エリアを半分表示/全画面表示で切り替える
   let sidebarExpanded = false;
@@ -994,34 +1006,36 @@
     .then(booths => {
       allBooths = booths;
       renderBoothList();
-      viewer.addHandler("tile-loaded", () => {
-        if (overlayInitialized) return;
-        overlayInitialized = true;
+      if (viewer) {
+        viewer.addHandler("tile-loaded", () => {
+          if (overlayInitialized) return;
+          overlayInitialized = true;
 
-        const img = viewer.world.getItemAt(0);
-        const imageWidth = img.getContentSize().x;
+          const img = viewer.world.getItemAt(0);
+          const imageWidth = img.getContentSize().x;
 
-        for (const booth of booths) {
-          if (![booth.x, booth.y, booth.w, booth.h].every(Number.isFinite)) {
-            console.warn("座標が不正なため booth をスキップしました:", booth.id);
-            continue;
+          for (const booth of booths) {
+            if (![booth.x, booth.y, booth.w, booth.h].every(Number.isFinite)) {
+              console.warn("座標が不正なため booth をスキップしました:", booth.id);
+              continue;
+            }
+
+            // OpenSeadragonのビューポート座標はx/y/width/heightすべてを画像の「幅」で正規化する
+            const rect = new OpenSeadragon.Rect(
+              booth.x / imageWidth,
+              booth.y / imageWidth,
+              booth.w / imageWidth,
+              booth.h / imageWidth
+            );
+            boothRects[booth.id] = rect;
+
+            viewer.addOverlay({
+              element: createOverlayButton(booth.id),
+              location: rect
+            });
           }
-
-          // OpenSeadragonのビューポート座標はx/y/width/heightすべてを画像の「幅」で正規化する
-          const rect = new OpenSeadragon.Rect(
-            booth.x / imageWidth,
-            booth.y / imageWidth,
-            booth.w / imageWidth,
-            booth.h / imageWidth
-          );
-          boothRects[booth.id] = rect;
-
-          viewer.addOverlay({
-            element: createOverlayButton(booth.id),
-            location: rect
-          });
-        }
-      });
+        });
+      }
     })
     .catch(err => {
       console.error(err);
@@ -1029,17 +1043,19 @@
         "ブース情報の読み込みに失敗しました。時間をおいて再度お試しください。";
     });
 
-  viewer.addHandler("canvas-click", function(event) {
-    const webPoint = event.position;
-    const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
-    const imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
+  if (viewer) {
+    viewer.addHandler("canvas-click", function(event) {
+      const webPoint = event.position;
+      const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
+      const imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
 
-    const x_px = Math.round(imagePoint.x);
-    const y_px = Math.round(imagePoint.y);
+      const x_px = Math.round(imagePoint.x);
+      const y_px = Math.round(imagePoint.y);
 
-    console.log("クリック位置(px):", x_px, y_px);
+      console.log("クリック位置(px):", x_px, y_px);
 
-  });
+    });
+  }
 
 </script>
 </body>
