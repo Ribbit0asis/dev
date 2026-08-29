@@ -892,8 +892,8 @@
     const postsPanelHtml = renderPostsPagerHtml();
     const performersPanelHtml = `
       ${performerPostUrls.length ? renderPostsPagerHtml() : ""}
-      ${performerPostUrls.length > 0 && performerLinks > 0 ? '</ul><hr class="detai-hr">' : ""}
-      ${performerLinks ? `<ul>${performerLinks}` : ""}
+      ${performerPostUrls.length > 0 && performerLinks.length > 0 ? '<hr class="detai-hr">' : ""}
+      ${performerLinks ? `<ul>${performerLinks}</ul>` : ""}
     `;
     const panelHtml = { posts: postsPanelHtml, performers: performersPanelHtml };
 
