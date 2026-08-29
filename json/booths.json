@@ -141,8 +141,7 @@
                                "https://x.com/nobunaga_kt/status/2092183939955982754?s=61",
                                "https://x.com/kt_shingeki/status/2092191504320360877?s=61",
                                "https://x.com/s_sangokumusou/status/2092217259049865630?s=61",
-                               "https://x.com/gustatelierpr/status/2092204453101445515?s=61",
-                               "https://x.com/kt_spot/status/2092184610319044619?s=61"
+                               "https://x.com/gustatelierpr/status/2092204453101445515?s=61"
                            ],
         "performerSns":  [
 
@@ -690,6 +689,26 @@
                               "https://x.com/issa0lin5/status/2090412467247804487?s=61",
                               "https://x.com/shin_taya_vrc/status/2090410589667672358?s=61"
                           ],
+        "x":  0,
+        "y":  0,
+        "w":  0,
+        "h":  0
+    },
+    {
+        "id":  "69",
+        "boothNo":  "11-C01",
+        "name":  "EPOMAKER",
+        "urlSns":  "https://x.com/epomaker?s=20",
+        "urlPage":  "https://t.co/P76I7KfmP6",
+        "informationUrl":  [
+                               "https://x.com/epomaker/status/2093681235944194411?s=20"
+                           ],
+        "performerSns":  [
+
+                         ],
+        "performerPost":  {
+
+                          },
         "x":  0,
         "y":  0,
         "w":  0,
