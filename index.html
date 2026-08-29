@@ -170,18 +170,20 @@
   #booth-detail {
     position: absolute;
     inset: 0;
-    overflow-y: auto;
+    overflow: hidden;
     background: #fff;
     border: 1px solid #ddd;
     padding: 10px;
     display: none;
+    flex-direction: column;
   }
   #booth-detail.is-open {
-    display: block;
+    display: flex;
     border-radius: 10px;
   }
   .detail-header {
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
@@ -199,8 +201,12 @@
     flex-shrink: 0;
   }
 
+  #booth-detail > p {
+    flex-shrink: 0;
+  }
   .detail-links {
     display: flex;
+    flex-shrink: 0;
     flex-wrap: wrap;
     gap: 8px;
     margin: 10px 0;
@@ -227,17 +233,28 @@
   }
   .detail-sections {
     margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
   }
   .detail-sections > h4 {
+    flex-shrink: 0;
     margin: 0 0 6px;
     font-size: 0.9em;
     color: #555;
   }
   .detail-tabs {
     display: flex;
+    flex-shrink: 0;
     gap: 4px;
     border-bottom: 1px solid #ddd;
     margin-bottom: 8px;
+  }
+  .detail-tab-panel {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
   }
   .detail-tab-button {
     padding: 4px 10px;
