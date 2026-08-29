@@ -23,7 +23,14 @@
   }(document, "script", "twitter-wjs"));
 </script>
 <style>
-  body { margin: 0; display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+  body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+  }
   #app-header {
     flex-shrink: 0;
     position: sticky;
@@ -467,15 +474,20 @@
         <li>気になるブースにチェックを付けると「チェック済み」に保存できます。(ブラウザに記憶され、次回アクセス時も保持されます)
           <!--<br>チェックを付けると地図上のブースの色が変わります。--></li>
       </ul>
-      <h3>検索</h3>
-      <ul>
-        <li>「検索」タブではブース番号またはブース名で検索ができます。</li>
-      </ul>
       <h3>ブース詳細</h3>
       <ul>
         <li>公式SNS・公式ページ・関連ポストなどを確認できます。</li>
         <li>「一覧に戻る」ボタンで詳細を閉じ、一覧表示に戻ります。</li>
       </ul>
+      <h3>検索</h3>
+      <ul>
+        <li>「検索」タブではブース番号またはブース名で検索ができます。</li>
+      </ul>
+      <h3>チェック済み</h3>
+      <ul>
+        <li>ブース一覧、ブース詳細画面でチェックを付けたブースを表示します。</li>
+      </ul>
+
     </div>
   </div>
 </div>
