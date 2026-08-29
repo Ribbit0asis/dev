@@ -1,5 +1,88 @@
 ﻿[
     {
+        "id":  "54",
+        "boothNo":  "-",
+        "name":  "DMM GAMES (EXNOA)",
+        "urlSns":  "https://x.com/dmmolg_com",
+        "urlPage":  "https://tgs2026.dmmgames-official.com/?utm_content=000000\u0026utm_source=Twitter\u0026utm_medium=pure\u0026utm_campaign=nml",
+        "informationUrl":  [
+                               "https://x.com/dmmolg_com/status/2090287714226577747?s=61",
+                               "https://x.com/dmmolg_com/status/2090364445847638086?s=61",
+                               "https://x.com/touken_puzzle/status/2090287711592812745?s=61",
+                               "https://x.com/machisuba/status/2090289007557239063?s=61",
+                               "https://x.com/muvluv_official/status/2090289976806404302?s=61",
+                               "https://x.com/muvluv_gg/status/2090348108735729756?s=61",
+                               "https://x.com/kamihimeproject/status/2090363222196961315?s=61",
+                               "https://x.com/muvluv_gg/status/2091103093374980474?s=61",
+                               "https://x.com/muvluv_gg/status/2092459734507069846?s=61"
+                           ],
+        "performerSns":  [
+                             {
+                                 "name":  "とうか",
+                                 "url":  "https://x.com/tohka_cos?s=11"
+                             },
+                             {
+                                 "name":  "月海つくね",
+                                 "url":  "https://x.com/xaiabp?s=11"
+                             },
+                             {
+                                 "name":  "チェリねえ",
+                                 "url":  "https://x.com/cheri_424?s=11"
+                             }
+                         ],
+        "performerPost":  [
+                              "https://x.com/tohka_cos/status/2092554451748106510?s=61",
+                              "https://x.com/xaiabp/status/2092554015645302984?s=61",
+                              "https://x.com/cheri_424/status/2092477350260670487?s=61"
+                          ],
+        "x":  0,
+        "y":  0,
+        "w":  0,
+        "h":  0
+    },
+    {
+        "id":  "160",
+        "boothNo":  "-",
+        "name":  "LEAFshade",
+        "urlSns":  "https://x.com/LEAFshade_",
+        "urlPage":  "https://www.leafshade-online.com/",
+        "informationUrl":  [
+                               "https://x.com/LEAFshade_/status/2084590167076024639?s=20"
+                           ],
+        "performerSns":  [
+
+                         ],
+        "performerPost":  {
+
+                          },
+        "x":  0,
+        "y":  0,
+        "w":  0,
+        "h":  0
+    },
+    {
+        "id":  "191",
+        "boothNo":  "-",
+        "name":  "netmarble",
+        "urlSns":  "https://x.com/NetmarbleO",
+        "urlPage":  "https://tgs.netmarble.jp/",
+        "informationUrl":  [
+                               "https://x.com/shanfro_nana/status/2090725602978623805?s=61",
+                               "https://x.com/pearl_in_blue/status/2088181329922068852?s=61",
+                               "https://x.com/sololv_karma_jp/status/2079431172694982905?s=61"
+                           ],
+        "performerSns":  [
+
+                         ],
+        "performerPost":  {
+
+                          },
+        "x":  0,
+        "y":  0,
+        "w":  0,
+        "h":  0
+    },
+    {
         "id":  "316",
         "boothNo":  "-",
         "name":  "ZETA DIVISION",
@@ -14,6 +97,52 @@
                                "https://x.com/zetadivision/status/2093296329158177102?s=20",
                                "https://x.com/zetadivision/status/2093307609608806673?s=61",
                                "https://x.com/zenaim_official/status/2093283725236981902?s=61"
+                           ],
+        "performerSns":  [
+
+                         ],
+        "performerPost":  {
+
+                          },
+        "x":  0,
+        "y":  0,
+        "w":  0,
+        "h":  0
+    },
+    {
+        "id":  "324",
+        "boothNo":  "-",
+        "name":  "アニプレックス",
+        "urlSns":  "https://x.com/aniplex_info",
+        "urlPage":  "",
+        "informationUrl":  [
+                               "https://x.com/aniplex_info/status/2083790293120565436?s=20"
+                           ],
+        "performerSns":  [
+
+                         ],
+        "performerPost":  {
+
+                          },
+        "x":  0,
+        "y":  0,
+        "w":  0,
+        "h":  0
+    },
+    {
+        "id":  "356",
+        "boothNo":  "-",
+        "name":  "コーエーテクモゲームス",
+        "urlSns":  "https://x.com/koeitecmogames?s=11",
+        "urlPage":  "https://www.gamecity.ne.jp/tgs/ja/",
+        "informationUrl":  [
+                               "https://x.com/koeitecmogames/status/2092175150007640411?s=61",
+                               "https://x.com/wolong_jp/status/2092183796607246755?s=61",
+                               "https://x.com/nobunaga_kt/status/2092183939955982754?s=61",
+                               "https://x.com/kt_shingeki/status/2092191504320360877?s=61",
+                               "https://x.com/s_sangokumusou/status/2092217259049865630?s=61",
+                               "https://x.com/gustatelierpr/status/2092204453101445515?s=61",
+                               "https://x.com/kt_spot/status/2092184610319044619?s=61"
                            ],
         "performerSns":  [
 
@@ -63,13 +192,63 @@
         "h":  0
     },
     {
-        "id":  "160",
+        "id":  "415",
         "boothNo":  "-",
-        "name":  "LEAFshade",
-        "urlSns":  "https://x.com/LEAFshade_",
-        "urlPage":  "https://www.leafshade-online.com/",
+        "name":  "パイオニア",
+        "urlSns":  "https://x.com/pioneer_gaming_?s=11",
+        "urlPage":  "",
         "informationUrl":  [
-                               "https://x.com/LEAFshade_/status/2084590167076024639?s=20"
+                               "https://x.com/pioneer_gaming_/status/2093215463933165685?s=61"
+                           ],
+        "performerSns":  [
+                             {
+                                 "name":  "うんぴのゆー",
+                                 "url":  "https://x.com/unpi_yu?s=11"
+                             }
+                         ],
+        "performerPost":  "https://x.com/unpi_yu/status/2093369962694115732?s=61",
+        "x":  0,
+        "y":  0,
+        "w":  0,
+        "h":  0
+    },
+    {
+        "id":  "423",
+        "boothNo":  "-",
+        "name":  "バンダイナムコエンターテインメント",
+        "urlSns":  "https://x.com/bandainamco_cs",
+        "urlPage":  "https://tgs2026.bn-ent.net/jp/",
+        "informationUrl":  [
+                               "https://x.com/bandainamco_cs/status/2084855727118786823?s=20",
+                               "https://x.com/dbgame_official/status/2084852635560210918?s=20",
+                               "https://x.com/BLEACH_mh_JP/status/2084859442210701617?s=20",
+                               "https://x.com/tales_ch/status/2084859448615649487?s=20",
+                               "https://x.com/opgame_official/status/2084928042619785317?s=20",
+                               "https://x.com/PROJECT_ACES/status/2080971849232695396?s=20",
+                               "https://x.com/PROJECT_ACES/status/2080972262413660226?s=20",
+                               "https://x.com/g_rogueorbit_jp/status/2093232111079903624?s=61",
+                               "https://x.com/gundam_gcg_jp/status/2093311384431804824?s=61"
+                           ],
+        "performerSns":  [
+
+                         ],
+        "performerPost":  {
+
+                          },
+        "x":  0,
+        "y":  0,
+        "w":  0,
+        "h":  0
+    },
+    {
+        "id":  "427",
+        "boothNo":  "-",
+        "name":  "ヒストリア",
+        "urlSns":  "https://x.com/historia_gamejp",
+        "urlPage":  "",
+        "informationUrl":  [
+                               "https://x.com/historia_gamejp/status/2089517640494571815?s=61",
+                               "https://x.com/unme_jp/status/2089517636241526836?s=61"
                            ],
         "performerSns":  [
 
@@ -215,93 +394,6 @@
         "h":  0
     },
     {
-        "id":  "356",
-        "boothNo":  "-",
-        "name":  "コーエーテクモゲームス",
-        "urlSns":  "https://x.com/koeitecmogames?s=11",
-        "urlPage":  "https://www.gamecity.ne.jp/tgs/ja/",
-        "informationUrl":  [
-                               "https://x.com/koeitecmogames/status/2092175150007640411?s=61",
-                               "https://x.com/wolong_jp/status/2092183796607246755?s=61",
-                               "https://x.com/nobunaga_kt/status/2092183939955982754?s=61",
-                               "https://x.com/kt_shingeki/status/2092191504320360877?s=61",
-                               "https://x.com/s_sangokumusou/status/2092217259049865630?s=61",
-                               "https://x.com/gustatelierpr/status/2092204453101445515?s=61",
-                               "https://x.com/kt_spot/status/2092184610319044619?s=61"
-                           ],
-        "performerSns":  [
-
-                         ],
-        "performerPost":  {
-
-                          },
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
-    },
-    {
-        "id":  "427",
-        "boothNo":  "-",
-        "name":  "ヒストリア",
-        "urlSns":  "https://x.com/historia_gamejp",
-        "urlPage":  "",
-        "informationUrl":  [
-                               "https://x.com/historia_gamejp/status/2089517640494571815?s=61",
-                               "https://x.com/unme_jp/status/2089517636241526836?s=61"
-                           ],
-        "performerSns":  [
-
-                         ],
-        "performerPost":  {
-
-                          },
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
-    },
-    {
-        "id":  "324",
-        "boothNo":  "-",
-        "name":  "アニプレックス",
-        "urlSns":  "https://x.com/aniplex_info",
-        "urlPage":  "",
-        "informationUrl":  [
-                               "https://x.com/aniplex_info/status/2083790293120565436?s=20"
-                           ],
-        "performerSns":  [
-
-                         ],
-        "performerPost":  {
-
-                          },
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
-    },
-    {
-        "id":  "553",
-        "boothNo":  "-",
-        "name":  "集英社ゲームズ",
-        "urlSns":  "https://x.com/shueishagameson?s=11",
-        "urlPage":  "https://shueisha-games.com/",
-        "informationUrl":  [
-                               "https://x.com/unme_jp/status/2089517636241526836?s=61"
-                           ],
-        "performerSns":  [
-
-                         ],
-        "performerPost":  {
-
-                          },
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
-    },
-    {
         "id":  "450",
         "boothNo":  "-",
         "name":  "やぶから堂",
@@ -323,36 +415,13 @@
         "h":  0
     },
     {
-        "id":  "415",
+        "id":  "553",
         "boothNo":  "-",
-        "name":  "パイオニア",
-        "urlSns":  "https://x.com/pioneer_gaming_?s=11",
-        "urlPage":  "",
+        "name":  "集英社ゲームズ",
+        "urlSns":  "https://x.com/shueishagameson?s=11",
+        "urlPage":  "https://shueisha-games.com/",
         "informationUrl":  [
-                               "https://x.com/pioneer_gaming_/status/2093215463933165685?s=61"
-                           ],
-        "performerSns":  [
-                             {
-                                 "name":  "うんぴのゆー",
-                                 "url":  "https://x.com/unpi_yu?s=11"
-                             }
-                         ],
-        "performerPost":  "https://x.com/unpi_yu/status/2093369962694115732?s=61",
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
-    },
-    {
-        "id":  "191",
-        "boothNo":  "-",
-        "name":  "netmarble",
-        "urlSns":  "https://x.com/NetmarbleO",
-        "urlPage":  "https://tgs.netmarble.jp/",
-        "informationUrl":  [
-                               "https://x.com/shanfro_nana/status/2090725602978623805?s=61",
-                               "https://x.com/pearl_in_blue/status/2088181329922068852?s=61",
-                               "https://x.com/sololv_karma_jp/status/2079431172694982905?s=61"
+                               "https://x.com/unme_jp/status/2089517636241526836?s=61"
                            ],
         "performerSns":  [
 
@@ -381,47 +450,6 @@
         "performerPost":  {
 
                           },
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
-    },
-    {
-        "id":  "54",
-        "boothNo":  "-",
-        "name":  "DMM GAMES (EXNOA)",
-        "urlSns":  "https://x.com/dmmolg_com",
-        "urlPage":  "https://tgs2026.dmmgames-official.com/?utm_content=000000\u0026utm_source=Twitter\u0026utm_medium=pure\u0026utm_campaign=nml",
-        "informationUrl":  [
-                               "https://x.com/dmmolg_com/status/2090287714226577747?s=61",
-                               "https://x.com/dmmolg_com/status/2090364445847638086?s=61",
-                               "https://x.com/touken_puzzle/status/2090287711592812745?s=61",
-                               "https://x.com/machisuba/status/2090289007557239063?s=61",
-                               "https://x.com/muvluv_official/status/2090289976806404302?s=61",
-                               "https://x.com/muvluv_gg/status/2090348108735729756?s=61",
-                               "https://x.com/kamihimeproject/status/2090363222196961315?s=61",
-                               "https://x.com/muvluv_gg/status/2091103093374980474?s=61",
-                               "https://x.com/muvluv_gg/status/2092459734507069846?s=61"
-                           ],
-        "performerSns":  [
-                             {
-                                 "name":  "とうか",
-                                 "url":  "https://x.com/tohka_cos?s=11"
-                             },
-                             {
-                                 "name":  "月海つくね",
-                                 "url":  "https://x.com/xaiabp?s=11"
-                             },
-                             {
-                                 "name":  "チェリねえ",
-                                 "url":  "https://x.com/cheri_424?s=11"
-                             }
-                         ],
-        "performerPost":  [
-                              "https://x.com/tohka_cos/status/2092554451748106510?s=61",
-                              "https://x.com/xaiabp/status/2092554015645302984?s=61",
-                              "https://x.com/cheri_424/status/2092477350260670487?s=61"
-                          ],
         "x":  0,
         "y":  0,
         "w":  0,
@@ -486,34 +514,6 @@
                                "https://x.com/p_kouhou/status/2091733682063290445?s=61",
                                "https://x.com/sega_official/status/2092871266772664424?s=61",
                                "https://x.com/stud_zero/status/2091733250490454144?s=61"
-                           ],
-        "performerSns":  [
-
-                         ],
-        "performerPost":  {
-
-                          },
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
-    },
-    {
-        "id":  "423",
-        "boothNo":  "-",
-        "name":  "バンダイナムコエンターテインメント",
-        "urlSns":  "https://x.com/bandainamco_cs",
-        "urlPage":  "https://tgs2026.bn-ent.net/jp/",
-        "informationUrl":  [
-                               "https://x.com/bandainamco_cs/status/2084855727118786823?s=20",
-                               "https://x.com/dbgame_official/status/2084852635560210918?s=20",
-                               "https://x.com/BLEACH_mh_JP/status/2084859442210701617?s=20",
-                               "https://x.com/tales_ch/status/2084859448615649487?s=20",
-                               "https://x.com/opgame_official/status/2084928042619785317?s=20",
-                               "https://x.com/PROJECT_ACES/status/2080971849232695396?s=20",
-                               "https://x.com/PROJECT_ACES/status/2080972262413660226?s=20",
-                               "https://x.com/g_rogueorbit_jp/status/2093232111079903624?s=61",
-                               "https://x.com/gundam_gcg_jp/status/2093311384431804824?s=61"
                            ],
         "performerSns":  [
 
