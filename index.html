@@ -32,11 +32,94 @@
     box-sizing: border-box;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0 16px;
     background: #000;
     color: #fff;
     font-weight: bold;
     z-index: 100;
+  }
+  .help-button {
+    flex-shrink: 0;
+    padding: 4px 12px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.85em;
+  }
+  .help-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  .help-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+  .help-modal {
+    background: #fff;
+    color: #1a1a1a;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 480px;
+    max-height: 80vh;
+    max-height: 80dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  .help-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #ddd;
+    flex-shrink: 0;
+  }
+  .help-modal-header h2 {
+    margin: 0;
+    font-size: 1.1em;
+  }
+  .help-close-btn {
+    flex-shrink: 0;
+    border: none;
+    background: none;
+    font-size: 1.3em;
+    line-height: 1;
+    cursor: pointer;
+    color: #555;
+    padding: 4px 8px;
+  }
+  .help-close-btn:hover {
+    color: #000;
+  }
+  .help-modal-body {
+    padding: 16px;
+    overflow-y: auto;
+    font-size: 0.9em;
+    line-height: 1.6;
+  }
+  .help-modal-body h3 {
+    margin: 14px 0 4px;
+    font-size: 1em;
+  }
+  .help-modal-body h3:first-child {
+    margin-top: 0;
+  }
+  .help-modal-body ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .help-modal-body li {
+    margin-bottom: 4px;
   }
   #app-body {
     flex: 1;
@@ -294,21 +377,7 @@
   }
 
   @media (max-width: 700px) {
-    #app-header {
-    flex-shrink: 0;
-    position: sticky;
-    top: 0;
-    height: 24px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    background: #000;
-    color: #fff;
-    font-weight: bold;
-    font-size: 12px;
-    z-index: 100;
-  }
+    #app-header { height: 24px; font-size: 12px; }
     #app-body { flex-direction: column; }
     #viewer { flex: 37 1 0; }
     #sidebar { flex: 59 1 0; border-left: none; border-top: 1px solid #ccc; }
@@ -316,7 +385,43 @@
 </style>
 </head>
 <body>
-<header id="app-header">Event Map Viewer</header>
+<header id="app-header">
+  <span class="app-header-title">Event Map Viewer</span>
+  <button type="button" id="help-button" class="help-button">ヘルプ</button>
+</header>
+<div id="help-overlay" class="help-overlay" hidden>
+  <div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-title">
+    <div class="help-modal-header">
+      <h2 id="help-title">使い方ガイド</h2>
+      <button type="button" id="help-close" class="help-close-btn" aria-label="ヘルプを閉じる">×</button>
+    </div>
+    <div class="help-modal-body">
+      <h3>地図の操作</h3>
+      <ul>
+        <li>ドラッグで地図を移動、ホイール操作(またはピンチ操作)で拡大・縮小できます。</li>
+        <li>ダブルクリックでその場所を拡大できます。</li>
+        <li>地図上の色つきの枠(ブースの場所)をクリックするとブース詳細が開きます。</li>
+      </ul>
+      <h3>ブース一覧</h3>
+      <ul>
+        <li>上部のタブで「ブース一覧」「チェック済み」「検索」を切り替えられます。</li>
+        <li>チェックボックスで「行く予定」のブースを保存できます(ブラウザに記憶され、次回アクセス時も保持されます)。チェックすると地図上の枠の色も変わります。</li>
+        <li>ブース番号・名前をクリックすると地図がそのブースへ移動します。</li>
+        <li>「詳細」ボタンでブースの詳細情報を表示します。</li>
+      </ul>
+      <h3>検索</h3>
+      <ul>
+        <li>「検索」タブでブース番号または名前の先頭部分を入力すると、該当するブースだけが一覧に表示されます。</li>
+      </ul>
+      <h3>ブース詳細</h3>
+      <ul>
+        <li>公式SNS・公式ページ・出演者(Xアカウント)・関連ポストを確認できます。</li>
+        <li>「一覧に戻る」ボタンで詳細を閉じ、一覧表示に戻ります。</li>
+      </ul>
+      <p>※ このヘルプは仮の内容です。今後の実装に合わせて更新予定です。</p>
+    </div>
+  </div>
+</div>
 <div id="app-body">
 <div id="viewer"></div>
 <div id="sidebar">
@@ -767,6 +872,29 @@
 
   document.getElementById("booth-detail").addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeBoothDetail();
+  });
+
+  // ヘルプモーダル（画面全体を覆う独立したオーバーレイ）
+  const helpOverlay = document.getElementById("help-overlay");
+  const helpButton = document.getElementById("help-button");
+
+  function openHelp() {
+      helpOverlay.hidden = false;
+      document.getElementById("help-close").focus();
+  }
+
+  function closeHelp() {
+      helpOverlay.hidden = true;
+      helpButton.focus();
+  }
+
+  helpButton.addEventListener("click", openHelp);
+  document.getElementById("help-close").addEventListener("click", closeHelp);
+  helpOverlay.addEventListener("click", (e) => {
+      if (e.target === helpOverlay) closeHelp();
+  });
+  document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !helpOverlay.hidden) closeHelp();
   });
 
   fetch("json/booths.json?v=" + ASSET_VERSION)
