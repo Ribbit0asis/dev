@@ -311,6 +311,9 @@
     font-size: 0.85em;
     color: #666;
   }
+  .detai-hr {
+    margin: 20px 0px 10px 0px;
+  }
   .tab-button {
     flex: 1;
     padding: 8px;
@@ -888,8 +891,9 @@
     }
     const postsPanelHtml = renderPostsPagerHtml();
     const performersPanelHtml = `
-      ${performerLinks ? `<ul>${performerLinks}</ul><hr>` : ""}
       ${performerPostUrls.length ? renderPostsPagerHtml() : ""}
+      ${performerPostUrls.length > 0 && performerLinks > 0 ? '</ul><hr class="detai-hr">' : ""}
+      ${performerLinks ? `<ul>${performerLinks}` : ""}
     `;
     const panelHtml = { posts: postsPanelHtml, performers: performersPanelHtml };
 
