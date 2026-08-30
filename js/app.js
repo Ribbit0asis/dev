@@ -16,7 +16,7 @@
   const viewer = SHOW_MAP ? OpenSeadragon({
     id: "viewer",
     prefixUrl: "images/",
-    tileSources: "TGS_WEB_MAP_2_edit2_1/TGS_WEB_MAP_2_edit2_1.dzi?v=" + ASSET_VERSION,
+    tileSources: "Tmap/tgs2026.dzi?v=" + ASSET_VERSION,
     gestureSettingsMouse: {
       clickToZoom: false,
       dblClickToZoom: true,
