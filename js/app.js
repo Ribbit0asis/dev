@@ -1,4 +1,4 @@
-  const SHOW_MAP = false;
+  const SHOW_MAP = true;
 
   const ASSET_VERSION = "1";
   const PLANNED_BOOTHS_KEY = "eventMapViewer.plannedBooths";
