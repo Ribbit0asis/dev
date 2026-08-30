@@ -373,22 +373,20 @@ body {
 }
 .booth-info:focus-visible,
 .booth-overlay:focus-visible {
-  outline: 3px solid #ff9800;
+  outline: 2px solid #ff9800;
   outline-offset: 2px;
 }
 .booth-overlay {
-  background-color: rgba(255, 0, 0, 0.3);
-  border: 1px solid rgba(255, 0, 0, 0.6);
+  background-color: rgba(0, 102, 255, 0.2);
   cursor: pointer;
   pointer-events: auto;
 }
 .booth-overlay--planned {
-  background-color: rgba(0, 110, 255, 0.35);
-  border-color: rgba(0, 110, 255, 0.7);
+  background-color: rgba(255, 0, 59, 0.35);
 }
 .booth-overlay--active {
-  outline: 3px solid #ff9800;
-  outline-offset: 1px;
+  outline: 2px solid #ff9800;
+  outline-offset: 2px;
 }
 
 .sidebar-toggle-btn {
