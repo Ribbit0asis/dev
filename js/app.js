@@ -1,7 +1,7 @@
   const SHOW_MAP = false;
 
   const ASSET_VERSION = "1";
-  const PLANNED_BOOTHS_KEY = "eventInfoViewer.plannedBooths";
+  const PLANNED_BOOTHS_KEY = "eventInfoViewerDev.plannedBooths";
 
   let allBooths = [];
   let overlayInitialized = false;
