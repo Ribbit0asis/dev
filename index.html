@@ -11,7 +11,10 @@
 <body>
 <header id="app-header">
   <span class="app-header-title">Event Info Viewer</span>
-  <button type="button" id="help-button" class="help-button">ヘルプ</button>
+  <div class="app-header-actions">
+    <button type="button" id="changelog-button" class="help-button">更新履歴</button>
+    <button type="button" id="help-button" class="help-button">ヘルプ</button>
+  </div>
 </header>
 <div id="help-overlay" class="help-overlay" hidden>
   <div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-title">
@@ -54,6 +57,20 @@
       <h3>チェック済み</h3>
       <ul>
         <li>ブース一覧、ブース詳細画面でチェックを付けたブースを表示します。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div id="changelog-overlay" class="help-overlay" hidden>
+  <div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="changelog-title">
+    <div class="help-modal-header">
+      <h2 id="changelog-title">更新履歴</h2>
+      <button type="button" id="changelog-close" class="help-close-btn" aria-label="更新履歴を閉じる">×</button>
+    </div>
+    <div class="help-modal-body">
+      <h3>YYYY-MM-DD</h3>
+      <ul>
+        <li>更新内容をここに記載してください。</li>
       </ul>
     </div>
   </div>

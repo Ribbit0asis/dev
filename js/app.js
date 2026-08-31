@@ -495,8 +495,30 @@
   helpOverlay.addEventListener("click", (e) => {
       if (e.target === helpOverlay) closeHelp();
   });
+
+  const changelogOverlay = document.getElementById("changelog-overlay");
+  const changelogButton = document.getElementById("changelog-button");
+
+  function openChangelog() {
+      changelogOverlay.hidden = false;
+      document.getElementById("changelog-close").focus();
+  }
+
+  function closeChangelog() {
+      changelogOverlay.hidden = true;
+      changelogButton.focus();
+  }
+
+  changelogButton.addEventListener("click", openChangelog);
+  document.getElementById("changelog-close").addEventListener("click", closeChangelog);
+  changelogOverlay.addEventListener("click", (e) => {
+      if (e.target === changelogOverlay) closeChangelog();
+  });
+
   document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !helpOverlay.hidden) closeHelp();
+      if (e.key !== "Escape") return;
+      if (!helpOverlay.hidden) closeHelp();
+      if (!changelogOverlay.hidden) closeChangelog();
   });
 
   fetch("json/booths.json?v=" + ASSET_VERSION)
