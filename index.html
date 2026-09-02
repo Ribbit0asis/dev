@@ -1,122 +1,134 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Event Info Viewer 開発用</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
-<script src="js/twitter-embed.js"></script>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event Info Viewer 開発用</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
+  <script src="js/twitter-embed.js"></script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-<header id="app-header">
-  <span class="app-header-title">Event Info Viewer</span>
-  <div class="app-header-actions">
-    <button type="button" id="changelog-button" class="help-button">更新履歴</button>
-    <button type="button" id="help-button" class="help-button">ヘルプ</button>
-  </div>
-</header>
-<div id="help-overlay" class="help-overlay" hidden>
-  <div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-title">
-    <div class="help-modal-header">
-      <h2 id="help-title">ヘルプ</h2>
-      <button type="button" id="help-close" class="help-close-btn" aria-label="ヘルプを閉じる">×</button>
+  <header id="app-header">
+    <span class="app-header-title">Event Info Viewer</span>
+    <div class="app-header-actions">
+      <button type="button" id="changelog-button" class="help-button">更新履歴</button>
+      <button type="button" id="help-button" class="help-button">ヘルプ</button>
     </div>
-    <div class="help-modal-body">
-      <h3>はじめに</h3>
-      <ul>
-        <li>本ページは@Ribbit0asisが個人で運営する非公式の情報まとめサイトです。</li>
-        <li>主にX（旧Twitter）に投稿された情報をまとめています。</li>
-        <li>情報は手動で追加していますので、間違いや抜け漏れがある場合がございます。予めご了承ください。</li>
-      </ul>
-     <!-- <h3>地図の操作</h3>
+  </header>
+  <div id="help-overlay" class="help-overlay" hidden>
+    <div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-title">
+      <div class="help-modal-header">
+        <h2 id="help-title">ヘルプ</h2>
+        <button type="button" id="help-close" class="help-close-btn" aria-label="ヘルプを閉じる">×</button>
+      </div>
+      <div class="help-modal-body">
+        <h3>はじめに</h3>
+        <ul>
+          <li>本ページは@Ribbit0asisが個人で運営する非公式の情報まとめサイトです。</li>
+          <li>主にX（旧Twitter）に投稿された情報をまとめています。</li>
+          <li>情報は手動で追加していますので、間違いや抜け漏れがある場合がございます。予めご了承ください。</li>
+        </ul>
+        <!-- <h3>地図の操作</h3>
       <ul>
         <li>地図は移動、拡大・縮小できます。</li>
         <li>地図上のブースの場所をクリックするとブース詳細が開きます。</li>
         <li>情報があるブースは青色、情報がないブースは灰色で表示されます。</li>
         <li>ブース一覧でチェックを付けたブースは赤色で表示されます。</li>
       </ul>-->
-      <h3>ブース一覧</h3>
-      <ul>
-        <li>ブース番号、ブース名が一覧で表示されます。</li>
-        <li>ブース番号が未確定のブースは「-」で表示されます。</li>
-        <!--<li>ブース番号・名前をクリックすると地図がそのブースへ移動します。</li>-->
-        <li>「詳細」ボタンでブースの詳細情報を表示します。</li>
-        <li>気になるブースにチェックを付けると「チェック済み」に保存できます。<br>(ブラウザに記憶され、次回アクセス時も保持されます)</li>
+        <h3>ブース一覧</h3>
+        <ul>
+          <li>ブース番号、ブース名が一覧で表示されます。</li>
+          <li>ブース番号が未確定のブースは「-」で表示されます。</li>
+          <!--<li>ブース番号・名前をクリックすると地図がそのブースへ移動します。</li>-->
+          <li>「詳細」ボタンでブースの詳細情報を表示します。</li>
+          <li>気になるブースにチェックを付けると「チェック済み」に保存できます。<br>(ブラウザに記憶され、次回アクセス時も保持されます)</li>
           <!--チェックを付けると地図上のブースの色が赤色に変わります。--></li>
-      </ul>
-      <h3>ブース詳細</h3>
-      <ul>
-        <li>公式SNS・公式ページ・関連ポストなどを確認できます。</li>
-        <li>「一覧に戻る」ボタンをクリックすると一覧画面に戻ります。</li>
-      </ul>
-      <h3>検索</h3>
-      <ul>
-        <li>ブース番号またはブース名で検索ができます。</li>
-      </ul>
-      <h3>チェック済み</h3>
-      <ul>
-        <li>ブース一覧、ブース詳細画面でチェックを付けたブースを表示します。</li>
-      </ul>
+        </ul>
+        <h3>ブース詳細</h3>
+        <ul>
+          <li>公式SNS・公式ページ・関連ポストなどを確認できます。</li>
+          <li>「一覧に戻る」ボタンをクリックすると一覧画面に戻ります。</li>
+        </ul>
+        <h3>検索</h3>
+        <ul>
+          <li>ブース番号またはブース名で検索ができます。</li>
+        </ul>
+        <h3>チェック済み</h3>
+        <ul>
+          <li>ブース一覧、ブース詳細画面でチェックを付けたブースを表示します。</li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
-<div id="changelog-overlay" class="help-overlay" hidden>
-  <div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="changelog-title">
-    <div class="help-modal-header">
-      <h2 id="changelog-title">更新履歴</h2>
-      <button type="button" id="changelog-close" class="help-close-btn" aria-label="更新履歴を閉じる">×</button>
-    </div>
-    <div class="help-modal-body">
-      <!-- <h3>YYYY-MM-DD</h3>
+  <div id="changelog-overlay" class="help-overlay" hidden>
+    <div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="changelog-title">
+      <div class="help-modal-header">
+        <h2 id="changelog-title">更新履歴</h2>
+        <button type="button" id="changelog-close" class="help-close-btn" aria-label="更新履歴を閉じる">×</button>
+      </div>
+      <div class="help-modal-body">
+        <!-- <h3>YYYY-MM-DD</h3>
       <ul>
-        <li  style="font-weight: bold; text-decoration: underline;">新規追加<li>name</li></li>
-        <li  style="font-weight: bold; text-decoration: underline;">情報更新<li>name</li></li>
+        <li  style="font-weight: bold; text-decoration: underline;">新規追加</li><ul><li>name</li></ul>
+        <li  style="font-weight: bold; text-decoration: underline;">情報更新</li><ul><li>name</li></ul>
       </ul> -->
-      <h3>2026-09-02</h3>
-      <ul>
-        <li  style="font-weight: bold; text-decoration: underline;">新規追加<li>name</li></li>
-        <li  style="font-weight: bold; text-decoration: underline;">情報更新<li>name</li></li>
-      </ul>
-      <h3>2026-08-31</h3>
-      <ul>
-        <li>DMM GAMES (EXNOA)：関連ポストを追加</li>
-        <li>DMM GAMES (EXNOA)：コンパニオン情報を追加</li>
-        <li>netmarble：関連ポストを追加</li>
-        <li>Pulsar Gaming Gears：新規追加</li>
-        <li>TALONGAMES：新規追加</li>
-        <li>ドリコム：新規追加</li>
-        <li>ハピネット：関連ポストを追加</li>
-        <li>ハリソンワールド：新規追加</li>
-        <li>バンダイナムコエンターテインメント：関連ポストを追加</li>
-        <li>東映ゲームズ：新規追加</li>
-      </ul>
-      <h3>2026-08-30</h3>
-      <ul>
-        <li>初期リリース</li>
-      </ul>
+        <h3>2026-09-02</h3>
+        <ul>
+          <li style="font-weight: bold; text-decoration: underline;">新規追加</li>
+          <ul>
+            <li>name</li>
+          </ul>
+          <li style="font-weight: bold; text-decoration: underline;">情報更新</li>
+          <ul>
+            <li>name</li>
+          </ul>
+        </ul>
+        <h3>2026-08-31</h3>
+        <ul>
+          <li>DMM GAMES (EXNOA)：関連ポストを追加</li>
+          <li>DMM GAMES (EXNOA)：コンパニオン情報を追加</li>
+          <li>netmarble：関連ポストを追加</li>
+          <li>Pulsar Gaming Gears：新規追加</li>
+          <li>TALONGAMES：新規追加</li>
+          <li>ドリコム：新規追加</li>
+          <li>ハピネット：関連ポストを追加</li>
+          <li>ハリソンワールド：新規追加</li>
+          <li>バンダイナムコエンターテインメント：関連ポストを追加</li>
+          <li>東映ゲームズ：新規追加</li>
+        </ul>
+        <h3>2026-08-30</h3>
+        <ul>
+          <li>初期リリース</li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
-<div id="app-body">
-<div id="viewer"></div>
-<div id="sidebar">
-  <button type="button" id="sidebar-toggle" class="sidebar-toggle-btn" aria-expanded="false">▲ 全画面表示</button>
-  <div class="tabs" role="tablist">
-    <button type="button" class="tab-button" id="tab-search" role="tab" aria-selected="false" aria-controls="booth-list">検索</button>
-    <button type="button" class="tab-button tab-button--active" id="tab-all" role="tab" aria-selected="true" aria-controls="booth-list">ブース一覧</button>
-    <button type="button" class="tab-button" id="tab-checked" role="tab" aria-selected="false" aria-controls="booth-list">チェック済み</button>
+  <div id="app-body">
+    <div id="viewer"></div>
+    <div id="sidebar">
+      <button type="button" id="sidebar-toggle" class="sidebar-toggle-btn" aria-expanded="false">▲ 全画面表示</button>
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab-button" id="tab-search" role="tab" aria-selected="false"
+          aria-controls="booth-list">検索</button>
+        <button type="button" class="tab-button tab-button--active" id="tab-all" role="tab" aria-selected="true"
+          aria-controls="booth-list">ブース一覧</button>
+        <button type="button" class="tab-button" id="tab-checked" role="tab" aria-selected="false"
+          aria-controls="booth-list">チェック済み</button>
+      </div>
+      <div class="search-box" id="search-box" hidden>
+        <input type="search" id="search-input" placeholder="ブース番号または名前で検索（前方一致）" aria-label="ブース番号または名前で検索（前方一致）">
+      </div>
+      <div class="list-panel">
+        <div id="booth-list" role="tabpanel"></div>
+        <div id="booth-detail"></div>
+      </div>
+    </div>
   </div>
-  <div class="search-box" id="search-box" hidden>
-    <input type="search" id="search-input" placeholder="ブース番号または名前で検索（前方一致）" aria-label="ブース番号または名前で検索（前方一致）">
-  </div>
-  <div class="list-panel">
-    <div id="booth-list" role="tabpanel"></div>
-    <div id="booth-detail"></div>
-  </div>
-</div>
-</div>
 
-<script src="js/app.js"></script>
+  <script src="js/app.js"></script>
 </body>
+
 </html>
