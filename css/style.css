@@ -229,6 +229,7 @@ body {
 }
 .detail-nav button:disabled {
   cursor: default;
+  background: #00118f52;
 }
 .detail-sections {
   margin-top: 14px;
