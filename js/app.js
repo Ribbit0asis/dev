@@ -378,8 +378,8 @@
       <div class="detail-links">
         ${officialLinks}
         <div class="detail-nav">
-          <button type="button" class="detail-link detail-prev-booth" aria-label="前のブースの詳細を表示">←</button>
-          <button type="button" class="detail-link detail-next-booth" aria-label="次のブースの詳細を表示">→</button>
+          <button type="button" class="booth-detail-btn detail-prev-booth" aria-label="前のブースの詳細を表示">←</button>
+          <button type="button" class="booth-detail-btn detail-next-booth" aria-label="次のブースの詳細を表示">→</button>
         </div>
       </div>
       ${sections.length ? `
