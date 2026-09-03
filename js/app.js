@@ -375,7 +375,13 @@
         <button type="button" class="detail-close booth-detail-btn">一覧に戻る</button>
       </div>
       ${booth.desc ? `<p>${escapeHtml(booth.desc)}</p>` : ""}
-      <div class="detail-links">${officialLinks}</div>
+      <div class="detail-links">
+        ${officialLinks}
+        <div class="detail-nav">
+          <button type="button" class="detail-link detail-prev-booth" aria-label="前のブースの詳細を表示">←</button>
+          <button type="button" class="detail-link detail-next-booth" aria-label="次のブースの詳細を表示">→</button>
+        </div>
+      </div>
       ${sections.length ? `
         <div class="detail-sections">
           ${sections.length > 1 ? `
@@ -398,6 +404,21 @@
         togglePlanned(booth.id, e.target.checked);
     });
     detail.querySelector(".detail-close").addEventListener("click", closeBoothDetail);
+
+    const visibleBooths = getVisibleBooths();
+    const currentIndex = visibleBooths.findIndex(b => b.id === booth.id);
+    const prevBooth = currentIndex > 0 ? visibleBooths[currentIndex - 1] : null;
+    const nextBooth = currentIndex !== -1 && currentIndex < visibleBooths.length - 1 ? visibleBooths[currentIndex + 1] : null;
+
+    const prevBtn = detail.querySelector(".detail-prev-booth");
+    const nextBtn = detail.querySelector(".detail-next-booth");
+    prevBtn.disabled = !prevBooth;
+    prevBtn.classList.toggle("detail-link--disabled", !prevBooth);
+    nextBtn.disabled = !nextBooth;
+    nextBtn.classList.toggle("detail-link--disabled", !nextBooth);
+    if (prevBooth) prevBtn.addEventListener("click", () => showBoothDetail(prevBooth));
+    if (nextBooth) nextBtn.addEventListener("click", () => showBoothDetail(nextBooth));
+
     detail.classList.add("is-open");
     detail.querySelector(".detail-close").focus();
   }

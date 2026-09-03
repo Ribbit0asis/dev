@@ -219,6 +219,17 @@ body {
 .detail-link--disabled:hover {
   background: none;
 }
+.detail-nav {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+.detail-nav button {
+  cursor: pointer;
+}
+.detail-nav button:disabled {
+  cursor: default;
+}
 .detail-sections {
   margin-top: 14px;
   display: flex;
