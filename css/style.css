@@ -406,9 +406,7 @@ body {
   font-size: 10px;
   font-weight: bold;
   color: #fff;
-  white-space: nowrap;
   user-select: none;
-  text-overflow:ellipsis;
 }
 .booth-overlay--planned {
   background-color: rgba(255, 0, 59, 0.6);
