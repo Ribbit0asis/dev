@@ -398,6 +398,16 @@ body {
   background-color: rgba(0, 102, 255, 0.2);
   cursor: pointer;
   pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  user-select: none;
 }
 .booth-overlay--planned {
   background-color: rgba(255, 0, 59, 0.35);
@@ -405,16 +415,6 @@ body {
 .booth-overlay--active {
   outline: 2px solid #ff9800;
   outline-offset: 2px;
-}
-.booth-overlay-label {
-  pointer-events: none;
-  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-  font-size: 12px;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-  white-space: nowrap;
-  user-select: none;
 }
 
 .sidebar-toggle-btn {

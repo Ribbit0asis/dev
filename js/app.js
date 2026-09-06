@@ -248,6 +248,7 @@
 
       const booth = allBooths.find(b => b.id === boothId);
       div.setAttribute("aria-label", booth ? `${booth.name} を選択` : "ブースを選択");
+      div.textContent = booth ? booth.boothNo : "";
 
       const activate = () => {
           const b = allBooths.find(b => b.id === boothId);
@@ -263,14 +264,6 @@
 
       boothOverlayElements[boothId] = div;
       return div;
-  }
-
-  // ズームしても文字サイズが変わらないよう、Point指定のオーバーレイとして矩形ハイライトとは別に追加する
-  function createOverlayLabel(boothNo) {
-      const span = document.createElement("span");
-      span.className = "booth-overlay-label";
-      span.textContent = boothNo || "";
-      return span;
   }
 
   function renderBoothList() {
@@ -583,12 +576,6 @@
             viewer.addOverlay({
               element: createOverlayButton(booth.id),
               location: rect
-            });
-
-            viewer.addOverlay({
-              element: createOverlayLabel(booth.boothNo),
-              location: new OpenSeadragon.Point(rect.x + rect.width / 2, rect.y + rect.height / 2),
-              placement: OpenSeadragon.Placement.CENTER
             });
           }
         });
