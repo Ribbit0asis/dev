@@ -416,7 +416,7 @@ body {
 .booth-overlay--active {
   outline: 2px solid #ff9800;
   outline-offset: 2px;
-}v
+}
 
 .sidebar-toggle-btn {
   display: none;
