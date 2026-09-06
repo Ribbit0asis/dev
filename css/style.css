@@ -403,12 +403,15 @@ body {
   text-align: center;
   justify-content: center;
   overflow: hidden;
-  font-size: 10px;
   font-weight: bold;
   color: #fff;
   user-select: none;
   white-space: nowrap;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
+  container-type: size;
+}
+.booth-overlay-label {
+  font-size: 45cqh;
 }
 .booth-overlay--planned {
   background-color: rgba(255, 0, 59, 0.6);
