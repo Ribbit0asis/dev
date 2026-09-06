@@ -398,7 +398,7 @@ body {
   background-color: rgba(0, 102, 255, 0.5);
   cursor: pointer;
   pointer-events: auto;
-  display: flex;
+  display: flex !important;
   align-items: center;
   text-align: center;
   justify-content: center;
