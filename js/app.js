@@ -248,6 +248,7 @@
 
       const booth = allBooths.find(b => b.id === boothId);
       div.setAttribute("aria-label", booth ? `${booth.name} を選択` : "ブースを選択");
+      div.textContent = booth ? booth.boothNo : "";
 
       const activate = () => {
           const b = allBooths.find(b => b.id === boothId);
