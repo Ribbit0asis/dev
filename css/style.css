@@ -411,7 +411,7 @@ body {
   container-type: size;
 }
 .booth-overlay-label {
-  font-size: 45cqh;
+  font-size: 8cqh;
 }
 .booth-overlay--planned {
   background-color: rgba(255, 0, 59, 0.6);
