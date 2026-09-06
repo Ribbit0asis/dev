@@ -32,7 +32,7 @@
     {
         "id":  "17",
         "boothNo":  "-",
-        "name":  "ASTRA（Astro Production）",
+        "name":  "ASTRA",
         "urlSns":  "https://x.com/astropro_info",
         "urlPage":  "",
         "informationUrl":  [
@@ -133,7 +133,7 @@
     {
         "id":  "54",
         "boothNo":  "-",
-        "name":  "DMM GAMES (EXNOA)",
+        "name":  "DMM GAMES",
         "urlSns":  "https://x.com/dmmolg_com",
         "urlPage":  "https://tgs2026.dmmgames-official.com/?utm_content=000000\u0026utm_source=Twitter\u0026utm_medium=pure\u0026utm_campaign=nml",
         "informationUrl":  [
@@ -254,10 +254,10 @@
         "performerPost":  {
 
                           },
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
+        "x":  701,
+        "y":  1436,
+        "w":  151,
+        "h":  78
     },
     {
         "id":  "69",
@@ -302,7 +302,7 @@
     {
         "id":  "86",
         "boothNo":  "08-N06",
-        "name":  "G TUNE·NEXTGEAR(マウスコンピューター)",
+        "name":  "G TUNE·NEXTGEAR",
         "urlSns":  "https://x.com/GTUNE_NEXTGEAR",
         "urlPage":  "https://www.mouse-jp.co.jp/store/e/ea1021602/?utm_source=x\u0026utm_medium=social_g\u0026utm_campaign=others\u0026utm_term=featured\u0026utm_content=260807a03",
         "informationUrl":  [
@@ -325,7 +325,7 @@
     {
         "id":  "87",
         "boothNo":  "02-C21",
-        "name":  "GALLERIA(サードウェーブ)",
+        "name":  "GALLERIA",
         "urlSns":  "https://x.com/GALLERIA_GM",
         "urlPage":  "https://www.dospara.co.jp/gamepc/cts-tgs2026.html",
         "informationUrl":  [
@@ -446,10 +446,10 @@
                               "https://x.com/nekoze__tt/status/2095078791689441544?s=20",
                               "https://x.com/cosplay_110/status/2095801424273899642?s=20"
                           ],
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
+        "x":  1134,
+        "y":  2105,
+        "w":  113,
+        "h":  111
     },
     {
         "id":  "160",
@@ -541,10 +541,10 @@
         "performerPost":  {
 
                           },
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
+        "x":  882,
+        "y":  1435,
+        "w":  229,
+        "h":  189
     },
     {
         "id":  "183",
@@ -754,26 +754,6 @@
         "h":  0
     },
     {
-        "id":  "209",
-        "boothNo":  "10-C03",
-        "name":  "PCCS／声優e-Sports部",
-        "urlSns":  "",
-        "urlPage":  "",
-        "informationUrl":  [
-                               "https://x.com/seiyu_esports/status/2094712258962268666?s=61"
-                           ],
-        "performerSns":  [
-
-                         ],
-        "performerPost":  {
-
-                          },
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
-    },
-    {
         "id":  "224",
         "boothNo":  "02-C20",
         "name":  "Pulsar Gaming Gears",
@@ -839,7 +819,7 @@
         "boothNo":  "-",
         "name":  "STORM",
         "urlSns":  "https://x.com/storm_btopc",
-        "urlPage":  "stormst.com/page/tgs2026",
+        "urlPage":  "https://stormst.com/page/tgs2026",
         "informationUrl":  [
                                "https://x.com/storm_btopc/status/2095799034858369532?s=20"
                            ],
@@ -1140,10 +1120,10 @@
                               "https://x.com/kipi_84/status/2092926515436781847?s=61",
                               "https://x.com/ojigi_chandayo/status/2092871776531603602?s=61"
                           ],
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
+        "x":  4727,
+        "y":  640,
+        "w":  746,
+        "h":  288
     },
     {
         "id":  "364",
@@ -1168,10 +1148,10 @@
         "performerPost":  {
 
                           },
-        "x":  0,
-        "y":  0,
-        "w":  0,
-        "h":  0
+        "x":  848,
+        "y":  640,
+        "w":  561,
+        "h":  288
     },
     {
         "id":  "365",
@@ -1384,7 +1364,7 @@
         "boothNo":  "06-N04",
         "name":  "ハピネット",
         "urlSns":  "https://x.com/happinet_game?s=11",
-        "urlPage":  "https://happinet-tgs.com/_",
+        "urlPage":  "https://happinet-tgs.com/",
         "informationUrl":  [
                                "https://x.com/happinet_game/status/2093237995201839376?s=61",
                                "https://x.com/happinet_game/status/2093238071051620610?s=61",
@@ -1450,10 +1430,10 @@
         "performerPost":  {
 
                           },
-        "x":  3603,
-        "y":  674,
-        "w":  606,
-        "h":  350
+        "x":  0,
+        "y":  0,
+        "w":  0,
+        "h":  0
     },
     {
         "id":  "427",
@@ -1684,6 +1664,26 @@
                              }
                          ],
         "performerPost":  "https://x.com/poyodaifukuya/status/2092208789093339281?s=20",
+        "x":  0,
+        "y":  0,
+        "w":  0,
+        "h":  0
+    },
+    {
+        "id":  "209",
+        "boothNo":  "10-C03",
+        "name":  "声優e-Sports部",
+        "urlSns":  "",
+        "urlPage":  "",
+        "informationUrl":  [
+                               "https://x.com/seiyu_esports/status/2094712258962268666?s=61"
+                           ],
+        "performerSns":  [
+
+                         ],
+        "performerPost":  {
+
+                          },
         "x":  0,
         "y":  0,
         "w":  0,
