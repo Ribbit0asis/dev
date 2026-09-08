@@ -145,6 +145,23 @@ body {
   border-radius: 4px;
   font-size: 0.9em;
 }
+.sort-box {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+.sort-toggle-btn {
+  width: 100%;
+  padding: 6px;
+  border: none;
+  border-radius: 4px;
+  background: #eee;
+  color: #333;
+  cursor: pointer;
+  font-size: 0.85em;
+}
+.sort-toggle-btn:hover {
+  background: #e0e0e0;
+}
 .list-panel {
   position: relative;
   flex: 1;

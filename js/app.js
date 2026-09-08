@@ -8,6 +8,7 @@
   let activeBoothId = null;
   let activeTab = "all";
   let searchQuery = "";
+  let sortMode = "default"; // "default" | "boothNo"
   let boothRects = {};
   let boothListItems = {};
   let boothOverlayElements = {};
@@ -156,19 +157,44 @@
       if (activeTab === "checked") renderBoothList();
   }
 
+  // boothNoは「ホール番号(2桁 or E)-方角1文字+連番2桁」の形式(例: 01-N02)
+  const BOOTH_DIRECTION_ORDER = { S: 0, E: 1, C: 2, N: 3, W: 4 };
+
+  function parseBoothNo(boothNo) {
+      const m = /^(\d+|[A-Za-z]+)-([A-Za-z])(\d+)$/.exec(boothNo || "");
+      if (!m) return null;
+      const [, hallRaw, dir, serialRaw] = m;
+      const hall = /^\d+$/.test(hallRaw) ? Number(hallRaw) : Infinity; // Eなど数値以外のホールは最後
+      const dirOrder = BOOTH_DIRECTION_ORDER[dir.toUpperCase()] ?? 99;
+      return { hall, dirOrder, serial: Number(serialRaw) };
+  }
+
+  function compareByBoothNo(a, b) {
+      const pa = parseBoothNo(a.boothNo);
+      const pb = parseBoothNo(b.boothNo);
+      if (!pa && !pb) return 0;
+      if (!pa) return 1;  // 未確定・不正な形式は末尾へ
+      if (!pb) return -1;
+      if (pa.hall !== pb.hall) return pa.hall - pb.hall;
+      if (pa.dirOrder !== pb.dirOrder) return pa.dirOrder - pb.dirOrder;
+      return pa.serial - pb.serial;
+  }
+
   function getVisibleBooths() {
+      let result;
       if (activeTab === "checked") {
-          return allBooths.filter(b => plannedBoothIds.has(b.id));
-      }
-      if (activeTab === "search") {
+          result = allBooths.filter(b => plannedBoothIds.has(b.id));
+      } else if (activeTab === "search") {
           const q = searchQuery.trim().toLowerCase();
           if (!q) return [];
           return allBooths.filter(b =>
               (b.boothNo && b.boothNo.toLowerCase().startsWith(q)) ||
               (b.name && b.name.toLowerCase().startsWith(q))
           );
+      } else {
+          result = allBooths;
       }
-      return allBooths;
+      return sortMode === "boothNo" ? result.slice().sort(compareByBoothNo) : result;
   }
 
   function setActiveTab(tab) {
@@ -180,6 +206,7 @@
       document.getElementById("tab-search").classList.toggle("tab-button--active", tab === "search");
       document.getElementById("tab-search").setAttribute("aria-selected", String(tab === "search"));
       document.getElementById("search-box").hidden = tab !== "search";
+      document.getElementById("sort-box").hidden = tab === "search";
       closeBoothDetail();
       renderBoothList();
       if (tab === "search") document.getElementById("search-input").focus();
@@ -192,6 +219,17 @@
       searchQuery = e.target.value;
       closeBoothDetail();
       renderBoothList();
+  });
+
+  function setSortMode(mode) {
+      sortMode = mode;
+      const btn = document.getElementById("sort-toggle");
+      btn.textContent = mode === "boothNo" ? "元の並び順に戻す" : "ブース番号順に並び替え";
+      renderBoothList();
+  }
+
+  document.getElementById("sort-toggle").addEventListener("click", () => {
+      setSortMode(sortMode === "boothNo" ? "default" : "boothNo");
   });
 
   function setActiveBooth(boothId) {
