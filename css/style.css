@@ -367,7 +367,7 @@ body {
 .booth-info {
   display: flex;
   align-items: baseline;
-  gap: 15px;
+  gap: 20px;
   min-width: 0;
   flex: 1;
   overflow: hidden;
