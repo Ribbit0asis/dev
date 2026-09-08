@@ -206,7 +206,6 @@
       document.getElementById("tab-search").classList.toggle("tab-button--active", tab === "search");
       document.getElementById("tab-search").setAttribute("aria-selected", String(tab === "search"));
       document.getElementById("search-box").hidden = tab !== "search";
-      document.getElementById("sort-box").hidden = tab === "search";
       closeBoothDetail();
       renderBoothList();
       if (tab === "search") document.getElementById("search-input").focus();
@@ -224,7 +223,10 @@
   function setSortMode(mode) {
       sortMode = mode;
       const btn = document.getElementById("sort-toggle");
-      btn.textContent = mode === "boothNo" ? "元の並び順に戻す" : "ブース番号順に並び替え";
+      const active = mode === "boothNo";
+      btn.classList.toggle("sort-toggle-btn--active", active);
+      btn.setAttribute("aria-pressed", String(active));
+      btn.title = active ? "元の並び順に戻す" : "ブース番号順に並び替え";
       renderBoothList();
   }
 
