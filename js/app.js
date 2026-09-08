@@ -421,8 +421,16 @@
     prevBtn.classList.toggle("detail-link--disabled", !prevBooth);
     nextBtn.disabled = !nextBooth;
     nextBtn.classList.toggle("detail-link--disabled", !nextBooth);
-    if (prevBooth) prevBtn.addEventListener("click", () => showBoothDetail(prevBooth));
-    if (nextBooth) nextBtn.addEventListener("click", () => showBoothDetail(nextBooth));
+    if (prevBooth) prevBtn.addEventListener("click", () => {
+        setActiveBooth(prevBooth.id);
+        focusBoothOnMap(prevBooth.id);
+        showBoothDetail(prevBooth);
+    });
+    if (nextBooth) nextBtn.addEventListener("click", () => {
+        setActiveBooth(nextBooth.id);
+        focusBoothOnMap(nextBooth.id);
+        showBoothDetail(nextBooth);
+    });
 
     detail.classList.add("is-open");
     detail.querySelector(".detail-close").focus();
