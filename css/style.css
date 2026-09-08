@@ -442,8 +442,8 @@ body {
 @media (max-width: 700px) {
   #app-header { height: 24px; font-size: 12px; }
   #app-body { flex-direction: column; }
-  #viewer { flex: 65 1 0; }
-  #sidebar { flex: 35 1 0; border-left: none; border-top: 1px solid #ccc; }
+  #viewer { flex: 55 1 0; }
+  #sidebar { flex: 45 1 0; border-left: none; border-top: 1px solid #ccc; }
   .sidebar-toggle-btn { display: block; }
   #app-body.sidebar-expanded #viewer { display: none; }
   #app-body.sidebar-expanded #sidebar { flex: 1 1 auto; }
