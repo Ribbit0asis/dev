@@ -208,15 +208,15 @@
       if (overlay) overlay.classList.add("booth-overlay--active");
   }
 
-  const MIN_FOCUS_CONTEXT = 0.20;
-  const MAX_FOCUS_CONTEXT = 0.30;
+  const MIN_FOCUS_CONTEXT = 0.10;
+  const MAX_FOCUS_CONTEXT = 0.20;
 
   function focusBoothOnMap(boothId) {
       const rect = boothRects[boothId];
       if (!rect) return; // 地図側の初期化が終わっていない場合は何もしない
 
       const boothSize = Math.max(rect.width, rect.height);
-      const contextSize = Math.min(MAX_FOCUS_CONTEXT, Math.max(MIN_FOCUS_CONTEXT, boothSize * 2));
+      const contextSize = Math.min(MAX_FOCUS_CONTEXT, Math.max(MIN_FOCUS_CONTEXT, boothSize * 3));
       const boxSize = Math.max(contextSize, rect.width, rect.height); // ブース全体は必ず収める
 
       const centerX = rect.x + rect.width / 2;
