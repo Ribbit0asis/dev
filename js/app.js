@@ -208,8 +208,8 @@
       if (overlay) overlay.classList.add("booth-overlay--active");
   }
 
-  const MIN_FOCUS_CONTEXT = 0.10;
-  const MAX_FOCUS_CONTEXT = 0.20;
+  const MIN_FOCUS_CONTEXT = 0.40;
+  const MAX_FOCUS_CONTEXT = 0.70;
 
   function focusBoothOnMap(boothId) {
       const rect = boothRects[boothId];
