@@ -226,7 +226,8 @@
       const active = mode === "boothNo";
       btn.classList.toggle("sort-toggle-btn--active", active);
       btn.setAttribute("aria-pressed", String(active));
-      btn.title = active ? "元の並び順に戻す" : "ブース番号順に並び替え";
+      btn.textContent = active ? "番号順" : "名前順";
+      btn.title = active ? "名前順に並び替え" : "ブース番号順に並び替え";
       renderBoothList();
   }
 
