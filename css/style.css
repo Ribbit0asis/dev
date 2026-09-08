@@ -395,7 +395,7 @@ body {
   outline-offset: 2px;
 }
 .booth-overlay {
-  background-color: rgba(186, 213, 255, 1.0);
+  background-color: rgba(139, 169, 223, 1.0);
   cursor: pointer;
   pointer-events: auto;
   display: flex !important;
