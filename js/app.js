@@ -2,13 +2,14 @@
 
   const ASSET_VERSION = "1";
   const PLANNED_BOOTHS_KEY = "eventInfoViewerDev.plannedBooths";
+  const SORT_MODE_KEY = "eventInfoViewerDev.sortMode";
 
   let allBooths = [];
   let overlayInitialized = false;
   let activeBoothId = null;
   let activeTab = "all";
   let searchQuery = "";
-  let sortMode = "default"; // "default" | "boothNo"
+  let sortMode = loadSortMode(); // "default" | "boothNo"
   let boothRects = {};
   let boothListItems = {};
   let boothOverlayElements = {};
@@ -131,6 +132,22 @@
       }
   }
 
+  function loadSortMode() {
+      try {
+          return localStorage.getItem(SORT_MODE_KEY) === "boothNo" ? "boothNo" : "default";
+      } catch {
+          return "default";
+      }
+  }
+
+  function saveSortMode(mode) {
+      try {
+          localStorage.setItem(SORT_MODE_KEY, mode);
+      } catch {
+          // localStorageが使えない環境では保存をあきらめる
+      }
+  }
+
   function togglePlanned(boothId, isPlanned) {
       if (isPlanned) {
           plannedBoothIds.add(boothId);
@@ -222,6 +239,7 @@
 
   function setSortMode(mode) {
       sortMode = mode;
+      saveSortMode(mode);
       const btn = document.getElementById("sort-toggle");
       const active = mode === "boothNo";
       btn.classList.toggle("sort-toggle-btn--active", active);
@@ -234,6 +252,9 @@
   document.getElementById("sort-toggle").addEventListener("click", () => {
       setSortMode(sortMode === "boothNo" ? "default" : "boothNo");
   });
+
+  // localStorageに保存された並び替え設定をボタンの表示に反映する
+  setSortMode(sortMode);
 
   function setActiveBooth(boothId) {
       if (activeBoothId != null) {

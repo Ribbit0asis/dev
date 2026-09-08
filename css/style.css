@@ -157,9 +157,6 @@ body {
   font-size: 0.8em;
   align-self: center;
 }
-.sort-toggle-btn:hover {
-  background: #e0e0e0;
-}
 .sort-toggle-btn--active {
   background: #4a6fe0;
   color: #fff;
