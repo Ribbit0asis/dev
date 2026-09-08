@@ -354,13 +354,17 @@
     if (performerLinks || performerPostUrls.length) sections.push({ key: "performers", label: "コンパニオン（敬称略）" });
 
     function renderPostsPagerHtml() {
-      return `
+      const nav = `
         <div class="detail-posts-nav">
           <button type="button" class="detail-posts-prev" aria-label="前のポスト">← 前へ</button>
           <span class="detail-posts-page"></span>
           <button type="button" class="detail-posts-next" aria-label="次のポスト">次へ →</button>
         </div>
+      `;
+      return `
+        ${nav}
         <div class="detail-posts-embed"></div>
+        ${nav}
       `;
     }
     const postsPanelHtml = renderPostsPagerHtml();
@@ -475,26 +479,42 @@
   function setupPostPager(detail, postUrls) {
       let index = 0;
       const embed = detail.querySelector(".detail-posts-embed");
-      const pageLabel = detail.querySelector(".detail-posts-page");
-      const nav = detail.querySelector(".detail-posts-nav");
-      const prevBtn = detail.querySelector(".detail-posts-prev");
-      const nextBtn = detail.querySelector(".detail-posts-next");
+      const navs = detail.querySelectorAll(".detail-posts-nav");
+      const pageLabels = detail.querySelectorAll(".detail-posts-page");
+      const prevBtns = detail.querySelectorAll(".detail-posts-prev");
+      const nextBtns = detail.querySelectorAll(".detail-posts-next");
+      const topNav = navs[0];
 
-      nav.style.display = postUrls.length > 1 ? "flex" : "none";
+      navs.forEach((nav) => {
+          nav.style.display = postUrls.length > 1 ? "flex" : "none";
+      });
 
       function renderCurrent() {
           embed.innerHTML = `<blockquote class="twitter-tweet" data-dnt="true"><a href="${escapeHtml(postUrls[index])}"></a></blockquote>`;
-          pageLabel.textContent = `${index + 1} / ${postUrls.length}`;
-          prevBtn.disabled = index === 0;
-          nextBtn.disabled = index === postUrls.length - 1;
+          pageLabels.forEach((label) => {
+              label.textContent = `${index + 1} / ${postUrls.length}`;
+          });
+          prevBtns.forEach((btn) => { btn.disabled = index === 0; });
+          nextBtns.forEach((btn) => { btn.disabled = index === postUrls.length - 1; });
           renderTwitterEmbeds(embed);
       }
 
-      prevBtn.addEventListener("click", () => {
-          if (index > 0) { index--; renderCurrent(); }
+      // 下部のボタンで切り替えた場合は、上部の前へ/次へボタンが見える位置まで自動スクロールする
+      prevBtns.forEach((btn, i) => {
+          btn.addEventListener("click", () => {
+              if (index === 0) return;
+              index--;
+              renderCurrent();
+              if (i > 0 && topNav) topNav.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          });
       });
-      nextBtn.addEventListener("click", () => {
-          if (index < postUrls.length - 1) { index++; renderCurrent(); }
+      nextBtns.forEach((btn, i) => {
+          btn.addEventListener("click", () => {
+              if (index === postUrls.length - 1) return;
+              index++;
+              renderCurrent();
+              if (i > 0 && topNav) topNav.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          });
       });
 
       renderCurrent();
