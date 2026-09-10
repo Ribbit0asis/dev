@@ -1,6 +1,6 @@
   const SHOW_MAP = true;
 
-  const ASSET_VERSION = "1";
+  const ASSET_VERSION = "2";
   const PLANNED_BOOTHS_KEY = "eventInfoViewerDev.plannedBooths";
   const SORT_MODE_KEY = "eventInfoViewerDev.sortMode";
 
